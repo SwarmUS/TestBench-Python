@@ -1,0 +1,1 @@
+protoc --proto_path=contrib/pheromones/src --python_out=src/hiveboard contrib/pheromones/src/proto/message.proto

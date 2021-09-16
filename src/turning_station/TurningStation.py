@@ -1,5 +1,6 @@
 import serial
 from time import sleep
+
 class TurningStation():
     def __init__(self,port,baudrate=112500):
         self.ser = serial.Serial(
