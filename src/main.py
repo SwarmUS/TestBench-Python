@@ -1,21 +1,25 @@
-from src.hiveboard.proto.message_pb2 import Greeting, Message
+import pandas
+from tqdm import tqdm
+
+from src.hiveboard.HiveBoard import HiveBoard
 from src.hiveboard.usb_stream import UsbStream
 
-HIVEMIND_ID = 0
-REMOTE_ID = 42
+stream = UsbStream('/dev/ttyACM1')
+hb = HiveBoard(stream, log=False)
 
-x = UsbStream('/dev/ttyACM1')
+accumulated_data = []
 
-greet = Greeting()
-greet.agent_id = HIVEMIND_ID
+hb.greet()
 
-greet_msg = Message()
-greet_msg.source_id = 0
-greet_msg.destination_id = 0xff
-greet_msg.greeting.CopyFrom(greet)
+for ticks in tqdm(range(10)):
+    data = hb.read_angle_data()
 
-print("Attempting to greet with HiveMind")
-x.write_message_to_stream(greet_msg)
-receivedMessage = x.read_message_from_stream()
+    for frame in data:
+        frame['Encoder Tick'] = ticks
+        accumulated_data.append(frame)
 
-print(receivedMessage)
+
+dataframe = pandas.DataFrame(accumulated_data)
+dataframe.to_csv('output.csv')
+
+hb.kill_receiver()
