@@ -40,3 +40,14 @@ class TurningStation():
         sleep(1)
         self.sendMsg("status")
         return  self.ser.read_all()
+
+    def goToTick(self, tick):
+        self.setAngle(tick)
+        self.setEnable(1)
+
+        while self.getStatus().decode() != "done":
+                sleep(0.3)
+
+
+def tickToAngle(tick):
+    return tick/2048*360

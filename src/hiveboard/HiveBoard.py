@@ -59,6 +59,14 @@ class HiveBoard:
 
         return self.angle_date
 
+    def set_num_angle_frames(self, num_frames):
+        msg = Message()
+        msg.source_id = self.uuid
+        msg.destination_id = self.uuid
+
+        msg.interloc.configure.configureAngleCalibration.numberOfFrames = num_frames
+        self._proto_stream.write_message_to_stream(msg)
+
     def _rx_msg_handler(self):
         while self._run:
             msg = self._proto_stream.read_message_from_stream()
