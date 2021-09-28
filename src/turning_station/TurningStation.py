@@ -5,7 +5,8 @@ class TurningStation():
     def __init__(self,port,baudrate=112500):
         self.ser = serial.Serial(
             port=port,
-            baudrate=baudrate
+            baudrate=baudrate,
+            timeout=0.5
         )
         sleep(2) # wait for reboot time
 
@@ -13,40 +14,64 @@ class TurningStation():
         self.ser.close()
 
     def sendMsg(self,msg):
-        self.ser.write(msg.encode())
-        sleep(0.2) #watit for processing time on arduino
+        # print(msg)
+        self.ser.write(msg.encode('utf-8'))
+        sleep(0.5) #wait for processing time on arduino
+
+        response = self.ser.read_until().decode()
+        if response != "ack\n": # retry on error
+            self.ser.flush()
+            sleep(0.5)
+            self.sendMsg(msg)
 
     def setAngle(self,angle):
-        msg = "turn:"+str(angle)
-        print(msg)
+        msg = "turn:"+str(angle)+";"
         self.sendMsg(msg)
 
     def setEnable(self,enable):
-        msg = "enable:"+str(enable)
-        print(msg)
+        msg = "enable:"+str(enable) + ";"
         self.sendMsg(msg)
 
     def resetPosition(self):
-        msg = "position_reset"
-        print(msg)
+        msg = "position_reset;"
         self.sendMsg(msg)
 
     def setDirection(self,direction):
-        msg = "direction:"+str(direction)
-        print(msg)
+        msg = "direction:"+str(direction) + ";"
         self.sendMsg(msg)
 
     def getStatus(self):
-        sleep(1)
-        self.sendMsg("status")
-        return  self.ser.read_all()
+        # sleep(0.1)
+        self.sendMsg("status;")
+        return self.ser.read_all()
+
+    def getPosition(self):
+        # sleep(1)
+        self.sendMsg("positionis;")
+        return self.ser.read_until()
 
     def goToTick(self, tick):
         self.setAngle(tick)
         self.setEnable(1)
 
-        while self.getStatus().decode() != "done":
-                sleep(0.3)
+        while self.getStatus().decode() != "done\n":
+                sleep(0.1)
+        position = 0
+        try:
+            position = self.getPosition().decode()
+        except:
+            position = self.getPosition().decode()
+        finally:
+            if int(position) > (tick + 1):
+                self.goToTick(tick)
+            elif int(position) < (tick - 1):
+                self.goToTick(tick)
+
+
+
+
+
+
 
 
 def tickToAngle(tick):
