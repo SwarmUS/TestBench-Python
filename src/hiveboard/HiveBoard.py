@@ -106,6 +106,7 @@ class HiveBoard:
                 obj[f'BB_{port} Rx Timestamp'] = beeboard.rxTimestamp
                 obj[f'BB_{port} SFD Angle'] = beeboard.sfdAngle
                 obj[f'BB_{port} Accumulator Angle'] = beeboard.accumulatorAngle
+                obj[f'BB_{port} Message ID'] = beeboard.messageId
 
             self.angle_date.append(obj)
 
