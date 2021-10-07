@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from src.hiveboard.proto.message_pb2 import STANDBY, OPERATING, ANGLE_CALIB_SENDER, ANGLE_CALIB_RECEIVER, \
+from hiveboard.proto.message_pb2 import STANDBY, OPERATING, ANGLE_CALIB_SENDER, ANGLE_CALIB_RECEIVER, \
     TWR_CALIB_INITIATOR, TWR_CALIB_RESPONDER
 
 

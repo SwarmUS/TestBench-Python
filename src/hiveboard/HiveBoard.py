@@ -1,8 +1,8 @@
 from threading import Thread
 from time import sleep
 
-from src.hiveboard.proto.message_pb2 import Greeting, Message, InterlocState, UNSUPORTED, STANDBY, ANGLE_CALIB_RECEIVER
-from src.hiveboard.proto.proto_stream import ProtoStream
+from hiveboard.proto.message_pb2 import Greeting, Message, InterlocState, UNSUPORTED, STANDBY, ANGLE_CALIB_RECEIVER
+from hiveboard.proto.proto_stream import ProtoStream
 
 
 class HiveBoard:

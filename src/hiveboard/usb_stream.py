@@ -1,6 +1,6 @@
 import serial
 
-from src.hiveboard.proto.proto_stream import ProtoStream
+from hiveboard.proto.proto_stream import ProtoStream
 
 
 class UsbStream(ProtoStream):

@@ -1,5 +1,5 @@
 import socket
-from src.hiveboard.proto.proto_stream import ProtoStream
+from hiveboard.proto.proto_stream import ProtoStream
 
 
 class EthernetStream(ProtoStream):

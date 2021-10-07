@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from google.protobuf.internal.decoder import _DecodeVarint32
 from google.protobuf.internal.encoder import _VarintBytes
 
-from src.hiveboard.proto.message_pb2 import Message
+from hiveboard.proto.message_pb2 import Message
 
 
 class ProtoStream(ABC):
