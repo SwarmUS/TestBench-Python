@@ -12,9 +12,10 @@ from src.turning_station.TurningStation import TurningStation, tickToAngle
 
 # To use ethernet, you must have a static IP of 192.168.1.101 on submask 255.255.255.0
 USE_ETHERNET = False
+distance = '_0p22_5m' # distance btw BB and distance between HB
 
 if not USE_ETHERNET:
-    hb_stream = UsbStream('/dev/ttyACM0')
+    hb_stream = UsbStream('/dev/ttyACM2')
 else:
     hb_stream = EthernetStream(55551)
     hb_stream.wait_connection()
@@ -34,20 +35,21 @@ testbench.resetPosition()
 
 if not os.path.exists('data'):
     os.makedirs('data')
-
-for ticks in tqdm(range(10, 100, 10)):
+stepSize = 10
+for ticks in tqdm(range(0, 2050 + stepSize, stepSize)):
     testbench.goToTick(ticks)
     data = hb.read_angle_data()
 
+    posTick = int(testbench.getPosition())
     for frame in data:
-        frame['Encoder Tick'] = ticks
-        frame['Angle'] = tickToAngle(ticks)
+        frame['Encoder Tick'] = posTick
+        frame['Angle'] = tickToAngle(posTick)
         accumulated_data.append(frame)
 
     sleep(0.5)
 
 
 dataframe = pandas.DataFrame(accumulated_data)
-dataframe.to_csv('data/' + datetime.now().strftime("%Y%m%d_%H%M%S") + '.csv')
+dataframe.to_csv('data/' + datetime.now().strftime("%Y%m%d_%H%M%S") + distance +'.csv')
 
 hb.kill_receiver()
