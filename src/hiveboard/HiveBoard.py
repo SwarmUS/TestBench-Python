@@ -11,6 +11,7 @@ class HiveBoard:
         self.interloc_state = UNSUPORTED
 
         self.angle_date = []
+        self.interloc_data = {}
 
         self._run = True
         self._proto_stream = proto_stream
@@ -67,6 +68,14 @@ class HiveBoard:
         msg.interloc.configure.configureAngleCalibration.numberOfFrames = num_frames
         self._proto_stream.write_message_to_stream(msg)
 
+    def enable_interloc_dumps(self, enabled: bool):
+        msg = Message()
+        msg.source_id = self.uuid
+        msg.destination_id = self.uuid
+
+        msg.interloc.configure.configureInterlocDumps.enable = enabled
+        self._proto_stream.write_message_to_stream(msg)
+
     def _rx_msg_handler(self):
         while self._run:
             msg = self._proto_stream.read_message_from_stream()
@@ -92,8 +101,10 @@ class HiveBoard:
             if self._log:
                 print(f'Interloc state change {prev_state} --> {new_state}')
             self.interloc_state = interloc_output.stateChange.newState
-        else:
+        elif interloc_output.HasField("rawAngleData"):
             self._handle_angle_data(interloc_output.rawAngleData)
+        elif interloc_output.HasField("interlocDump"):
+            self._handle_interloc_dump(interloc_output.interlocDump)
 
     def _handle_angle_data(self, angle_data):
         for frame in angle_data.frames:
@@ -110,3 +121,17 @@ class HiveBoard:
 
             self.angle_date.append(obj)
 
+    def _handle_interloc_dump(self, dump):
+        for update in dump.positionUpdates:
+            id = update.neighbor_id
+
+            obj = {
+                "Distance": update.position.distance,
+                "Azimuth": update.position.azimuth,
+                "LoS": update.position.in_los
+            }
+
+            if id in self.interloc_data.keys():
+                self.interloc_data[id].append(obj)
+            else:
+                self.interloc_data[id] = [obj]
