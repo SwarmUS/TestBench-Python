@@ -122,6 +122,8 @@ class HiveBoard:
             self.angle_date.append(obj)
 
     def _handle_interloc_dump(self, dump):
+        print("Received interloc updates")
+
         for update in dump.positionUpdates:
             id = update.neighbor_id
 
