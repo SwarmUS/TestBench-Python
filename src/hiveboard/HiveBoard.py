@@ -3,6 +3,12 @@ from time import sleep
 
 from src.hiveboard.proto.message_pb2 import Greeting, Message, InterlocState, UNSUPORTED, STANDBY, ANGLE_CALIB_RECEIVER
 from src.hiveboard.proto.proto_stream import ProtoStream
+from src.AngleCalculatorParameters import AngleCalculatorParameters
+
+
+def _fill_proto_list(proto_field, values_list):
+    for i, val in enumerate(values_list):
+        proto_field[i] = val
 
 
 class HiveBoard:
@@ -18,6 +24,13 @@ class HiveBoard:
         self._rx_thread = Thread(target=self._rx_msg_handler)
         self._rx_thread.start()
         self._log = log
+
+        self._id_map = {
+            0: 0,
+            1: 1,
+            5: 2
+        }
+        self._decision_matrix = [[0, 0, 1], [1, 0, 1], [0, 0, 0]]
 
     def kill_receiver(self):
         self._run = False
@@ -75,6 +88,30 @@ class HiveBoard:
 
         msg.interloc.configure.configureInterlocDumps.enable = enabled
         self._proto_stream.write_message_to_stream(msg)
+
+    def set_angle_parameters(self, params: AngleCalculatorParameters):
+        msg = Message()
+        msg.source_id = self.uuid
+        msg.destination_id = self.uuid
+
+        pair_id = self._id_map[params.m_pairID]
+
+        msg.interloc.configure.configureAngleParameters.anglePairId = pair_id
+
+        msg.interloc.configure.configureAngleParameters.antennas.extend(params.m_antennaPairs)
+        msg.interloc.configure.configureAngleParameters.slopeDecision.extend(self._decision_matrix[pair_id])
+
+        msg.interloc.configure.configureAngleParameters.tdoaNormalizationFactor = params.m_tdoaNormalizationFactors
+        msg.interloc.configure.configureAngleParameters.tdoaSlopes.extend(params.m_tdoaSlopes)
+        msg.interloc.configure.configureAngleParameters.tdoaIntercepts.extend(params.m_tdoaIntercepts)
+
+        msg.interloc.configure.configureAngleParameters.pdoaNormalizationFactor = params.m_pdoaNormalizationFactors
+        msg.interloc.configure.configureAngleParameters.pdoaSlope = params.m_pdoaSlopes
+        msg.interloc.configure.configureAngleParameters.pdoaIntercepts.extend(params.m_pdoaIntercepts)
+        msg.interloc.configure.configureAngleParameters.pdoaOrigins.extend(params.m_pdoaOrigins)
+
+        self._proto_stream.write_message_to_stream(msg)
+
 
     def _rx_msg_handler(self):
         while self._run:
