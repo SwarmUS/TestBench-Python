@@ -3,6 +3,12 @@ from time import sleep
 
 from src.hiveboard.proto.message_pb2 import Greeting, Message, InterlocState, UNSUPORTED, STANDBY, ANGLE_CALIB_RECEIVER
 from src.hiveboard.proto.proto_stream import ProtoStream
+from src.AngleCalculatorParameters import AngleCalculatorParameters
+
+
+def _fill_proto_list(proto_field, values_list):
+    for i, val in enumerate(values_list):
+        proto_field[i] = val
 
 
 class HiveBoard:
@@ -11,12 +17,20 @@ class HiveBoard:
         self.interloc_state = UNSUPORTED
 
         self.angle_date = []
+        self.interloc_data = {}
 
         self._run = True
         self._proto_stream = proto_stream
         self._rx_thread = Thread(target=self._rx_msg_handler)
         self._rx_thread.start()
         self._log = log
+
+        self._id_map = {
+            0: 0,
+            1: 1,
+            5: 2
+        }
+        self._decision_matrix = [[0, 0, 1], [1, 0, 1], [0, 0, 0]]
 
     def kill_receiver(self):
         self._run = False
@@ -67,6 +81,38 @@ class HiveBoard:
         msg.interloc.configure.configureAngleCalibration.numberOfFrames = num_frames
         self._proto_stream.write_message_to_stream(msg)
 
+    def enable_interloc_dumps(self, enabled: bool):
+        msg = Message()
+        msg.source_id = self.uuid
+        msg.destination_id = self.uuid
+
+        msg.interloc.configure.configureInterlocDumps.enable = enabled
+        self._proto_stream.write_message_to_stream(msg)
+
+    def set_angle_parameters(self, params: AngleCalculatorParameters):
+        msg = Message()
+        msg.source_id = self.uuid
+        msg.destination_id = self.uuid
+
+        pair_id = self._id_map[params.m_pairID]
+
+        msg.interloc.configure.configureAngleParameters.anglePairId = pair_id
+
+        msg.interloc.configure.configureAngleParameters.antennas.extend(params.m_antennaPairs)
+        msg.interloc.configure.configureAngleParameters.slopeDecision.extend(self._decision_matrix[pair_id])
+
+        msg.interloc.configure.configureAngleParameters.tdoaNormalizationFactor = params.m_tdoaNormalizationFactors
+        msg.interloc.configure.configureAngleParameters.tdoaSlopes.extend(params.m_tdoaSlopes)
+        msg.interloc.configure.configureAngleParameters.tdoaIntercepts.extend(params.m_tdoaIntercepts)
+
+        msg.interloc.configure.configureAngleParameters.pdoaNormalizationFactor = params.m_pdoaNormalizationFactors
+        msg.interloc.configure.configureAngleParameters.pdoaSlope = params.m_pdoaSlopes
+        msg.interloc.configure.configureAngleParameters.pdoaIntercepts.extend(params.m_pdoaIntercepts)
+        msg.interloc.configure.configureAngleParameters.pdoaOrigins.extend(params.m_pdoaOrigins)
+
+        self._proto_stream.write_message_to_stream(msg)
+
+
     def _rx_msg_handler(self):
         while self._run:
             msg = self._proto_stream.read_message_from_stream()
@@ -92,8 +138,10 @@ class HiveBoard:
             if self._log:
                 print(f'Interloc state change {prev_state} --> {new_state}')
             self.interloc_state = interloc_output.stateChange.newState
-        else:
+        elif interloc_output.HasField("rawAngleData"):
             self._handle_angle_data(interloc_output.rawAngleData)
+        elif interloc_output.HasField("interlocDump"):
+            self._handle_interloc_dump(interloc_output.interlocDump)
 
     def _handle_angle_data(self, angle_data):
         for frame in angle_data.frames:
@@ -110,3 +158,19 @@ class HiveBoard:
 
             self.angle_date.append(obj)
 
+    def _handle_interloc_dump(self, dump):
+        print("Received interloc updates")
+
+        for update in dump.positionUpdates:
+            id = update.neighbor_id
+
+            obj = {
+                "Distance": update.position.distance,
+                "Azimuth": update.position.azimuth,
+                "LoS": update.position.in_los
+            }
+
+            if id in self.interloc_data.keys():
+                self.interloc_data[id].append(obj)
+            else:
+                self.interloc_data[id] = [obj]
