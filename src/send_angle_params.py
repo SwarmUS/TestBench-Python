@@ -1,4 +1,6 @@
 import pickle as pkl
+from time import sleep
+
 from src.hiveboard.HiveBoard import HiveBoard
 from src.hiveboard.proto.ethernet_stream import EthernetStream
 from src.hiveboard.usb_stream import UsbStream
@@ -20,6 +22,8 @@ hb.greet()
 for i in [0, 1, 5]:
     params = pkl.load(open(f'parameters/{i}_angleCalculatorParameters.pkl', 'rb'))
     hb.set_angle_parameters(params)
+    sleep(0.5)
 
+sleep(1)
 hb.kill_receiver()
 
