@@ -39,7 +39,7 @@ class MainWindow(QMainWindow):
 
     def run(self, e):
         n = 10
-        pos = np.random.normal(size=(2, n), scale=1e-5)
+        pos = np.random.normal(size=(2, n), scale=8)
         self.graphWidget.update_points(pos.transpose())
 
 

@@ -12,10 +12,20 @@ class Graph2D(QtWidgets.QWidget):
         self.setLayout(self.layout)
 
         self.graphWidget = pg.plot()
+        self.graphWidget.setXRange(-15, 15)
+        self.graphWidget.setYRange(-15, 15)
         self.scatter = pg.ScatterPlotItem(size=10)
+        self.base = pg.ScatterPlotItem(size=10)
+        base_symbol = {'pos': [0,0],
+                'pen': {'color': 'w', 'width': 1},
+                'brush': pg.intColor(90, 100),
+                'symbol': 'd',
+                'size': 30}
+        self.base.addPoints([base_symbol])
+        self.graphWidget.addItem(self.base)
 
         n = 10
-        pos = np.random.normal(size=(2, n), scale=1e-5)
+        pos = np.random.normal(size=(2, n), scale=1)
 
         # creating spots using the random position
         spots_1 = [{'pos': pos[:, i], 'data': i}
