@@ -30,12 +30,9 @@ class DataUpdater(QObject):
 
         self.start_connection_thread()
 
-
-
     def start_connection_thread(self):
         self.connection_thread = threading.Thread(target=self.wait_for_connection)
         self.connection_thread.start()
-
 
     def wait_for_connection(self):
         while not self.hiveboard_connnected:
