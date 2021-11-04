@@ -38,6 +38,8 @@ class HiveBoard:
 
     def greet(self):
         greet = Greeting()
+        # Patch for message to be longer than 4 bytes so that python can deserialize its own messages
+        greet.agent_id = 1
         msg = Message()
         msg.greeting.CopyFrom(greet)
 

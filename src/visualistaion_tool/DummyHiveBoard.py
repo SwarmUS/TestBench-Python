@@ -69,7 +69,7 @@ class DummyHiveBoard(ProtoStream):
         msg.source_id = 1
         msg.destination_id = 1
         print("sending greet")
-        self._write_to_stream(msg)
+        self.write_message_to_stream(msg)
 
     def send_dummy_data(self):
         pass
