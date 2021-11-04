@@ -37,7 +37,8 @@ class MainWindow(QMainWindow):
         target_agent_menu = QMenu("Target Agent", self)
         self.checkable_agents = []
         for i in range(1, 7):
-            agent = QAction(f"Agent {i}", self, checkable=True)
+            agent = QAction(f"Agent {i}", self)
+            agent.setCheckable(True)
             target_agent_menu.addAction(agent)
             self.checkable_agents.append(agent)
             agent.triggered.connect(self.update_target_agent_from_config)

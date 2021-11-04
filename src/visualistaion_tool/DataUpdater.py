@@ -3,6 +3,12 @@ import time
 from Graph2D import Graph2D
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
 import numpy as np
+import sys
+
+sys.path.insert(0, "../hiveboard")
+from HiveBoard import HiveBoard
+from usb_stream import UsbStream
+from proto import message_pb2
 
 
 class DataUpdater(QObject):
