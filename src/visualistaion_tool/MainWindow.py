@@ -16,13 +16,12 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.target_agent_id = None
 
-        #Qt shenaninigans
+        # Qt shenaninigans
         self.setWindowTitle("SwarmUS Interlocalisation Visualisation Tool")
         self.container = QWidget()
         self.main_layout = QVBoxLayout()
         self.container.setLayout(self.main_layout)
         self.setCentralWidget(self.container)
-
 
         # Create UI elements here
         self.create_2d_graph_area()
@@ -63,25 +62,16 @@ class MainWindow(QMainWindow):
         self.target_agent_id = agent_id
         for agent in self.checkable_agents:
             agent.setChecked(False)
-        self.checkable_agents[agent_id-1].setChecked(True)
+        self.checkable_agents[agent_id - 1].setChecked(True)
         print(f"New target agent is {self.target_agent_id} based on greeting received")
-
-
 
     def create_2d_graph_area(self):
         self.graphWidget = Graph2D(self)
         self.main_layout.addWidget(self.graphWidget)
 
     def start_data_acquisition(self):
-        self.hiveboard = DataUpdater(self.graphWidget)
-        self.hiveboard_thread = QThread()
-        self.hiveboard.moveToThread(self.hiveboard_thread)
-        self.hiveboard_thread.started.connect(self.hiveboard.generate_random_data)
-        self.hiveboard_thread.start()
-
-
-
-
-
-
-
+        self.data_updater = DataUpdater(self.graphWidget)
+        self.data_updater_thread = QThread()
+        self.data_updater.moveToThread(self.data_updater_thread)
+        self.data_updater_thread.started.connect(self.data_updater.generate_random_data)
+        self.data_updater_thread.start()
