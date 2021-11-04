@@ -3,6 +3,7 @@ from time import sleep
 
 from src.hiveboard.proto.message_pb2 import Greeting, Message, InterlocState, UNSUPORTED, STANDBY, ANGLE_CALIB_RECEIVER
 from src.hiveboard.proto.message_pb2 import GetNeighborsListRequest, HiveMindHostApiRequest, Request
+from src.hiveboard.proto.message_pb2 import GetNeighborsListResponse, HiveMindHostApiResponse, Response
 from src.hiveboard.proto.proto_stream import ProtoStream
 from src.AngleCalculatorParameters import AngleCalculatorParameters
 
@@ -26,12 +27,21 @@ class HiveBoard:
         self._rx_thread.start()
         self._log = log
 
+        self.neighbors_list_callback = None
+        self.neighbor_position_callback = None
+
         self._id_map = {
             0: 0,
             1: 1,
             5: 2
         }
         self._decision_matrix = [[0, 0, 1], [1, 0, 1], [0, 0, 0]]
+
+    def set_neighbor_list_callback(self, callback):
+        self.neighbors_list_callback = callback
+
+    def set_neighbor_position_callback(self, callback):
+        self.neighbor_position_callback = callback
 
     def kill_receiver(self):
         self._run = False
@@ -146,6 +156,8 @@ class HiveBoard:
                 self._handle_greet_response(msg.greeting)
             elif msg.HasField("interloc"):
                 self._handle_interloc_message(msg.interloc.output)
+            elif msg.HasField("response"):
+                self._parse_and_handle_response(msg.response)
             else:
                 print(f'Received unhandled message: {msg}')
 
@@ -196,3 +208,18 @@ class HiveBoard:
                 self.interloc_data[id].append(obj)
             else:
                 self.interloc_data[id] = [obj]
+
+    def _parse_and_handle_response(self, response : Response):
+        if response.HasField("hivemind_host"):
+            hivemind_host_api_response = response.hivemind_host
+            if hivemind_host_api_response.HasField("neighbors_list") and self.neighbors_list_callback:
+                neighbors_list = hivemind_host_api_response.neighbors_list
+                self.neighbors_list_callback(neighbors_list.neighbors)
+            elif hivemind_host_api_response.HasField("neighbor") and self.neighbor_position_callback:
+                neighbor = hivemind_host_api_response.neighbor
+                self.neighbor_position_callback(neighbor)
+
+
+
+
+
