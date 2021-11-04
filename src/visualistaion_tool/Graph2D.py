@@ -18,7 +18,7 @@ class Graph2D(QtWidgets.QWidget):
         self.base = pg.ScatterPlotItem(size=10)
         base_symbol = {'pos': [0,0],
                 'pen': {'color': 'w', 'width': 1},
-                'brush': pg.intColor(90, 100),
+                'brush': pg.intColor(10, 100),
                 'symbol': 'd',
                 'size': 30}
         self.base.addPoints([base_symbol])
