@@ -5,7 +5,7 @@ import time
 
 sys.path.insert(0, "../hiveboard")
 
-from proto import message_pb2
+from proto.message_pb2 import Greeting, Message, InterlocState, UNSUPORTED, STANDBY, ANGLE_CALIB_RECEIVER
 from proto.proto_stream import ProtoStream
 
 
@@ -17,7 +17,6 @@ class DummyHiveBoard(ProtoStream):
         self.socket_connected = False
 
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
         self.thread = threading.Thread(target=self.handle_inbound_messages())
 
     def __del__(self):
@@ -28,7 +27,15 @@ class DummyHiveBoard(ProtoStream):
         self.socket.close()
 
     def _read_from_stream(self,  num_bytes: int):
-        return None
+        data = self.socket.recv(num_bytes)
+        while len(data) < num_bytes and self._run:
+            print("Did not receive enough bytes")
+            data += self.socket.recv(num_bytes-len(data))
+
+        if not self._run:
+            return None
+
+        return data
 
     def _write_to_stream(self, data: bytes):
         self.socket.send(data)
@@ -46,7 +53,7 @@ class DummyHiveBoard(ProtoStream):
                 msg = self.read_message_from_stream()
 
                 if msg is None:
-                    break
+                    continue
 
                 if msg.HasField("greeting"):
                     self.send_greet()
@@ -55,7 +62,14 @@ class DummyHiveBoard(ProtoStream):
                     self.send_dummy_data()
 
     def send_greet(self):
-        pass
+        greet = Greeting()
+        greet.agent_id = 1
+        msg = Message()
+        msg.greeting.CopyFrom(greet)
+        msg.source_id = 1
+        msg.destination_id = 1
+        print("sending greet")
+        self._write_to_stream(msg)
 
     def send_dummy_data(self):
         pass

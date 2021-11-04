@@ -59,6 +59,7 @@ class DataUpdater(QObject):
 
     def send_greet_message(self):
         while self.hiveboard.uuid == 0:
+            print("Sending greet")
             self.hiveboard.greet()
             time.sleep(2)
 
