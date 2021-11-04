@@ -62,6 +62,7 @@ class DataUpdater(QObject):
             print("Sending greet")
             self.hiveboard.greet()
             time.sleep(2)
+        self.received_greeting.emit(self.hiveboard.uuid)
 
     def generate_random_data(self):
         while True:

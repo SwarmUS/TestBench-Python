@@ -29,6 +29,7 @@ class MainWindow(QMainWindow):
 
         # Add backend elements here
         self.start_data_acquisition()
+        self.data_updater.received_greeting.connect(self.update_target_agent_from_greeting)
 
     def create_menu_bar(self):
         menu_bar = self.menuBar()
@@ -55,6 +56,7 @@ class MainWindow(QMainWindow):
                 else:
                     new_agent_id = self.checkable_agents.index(agent) + 1
             self.target_agent_id = new_agent_id
+            self.data_updater.target_agent_id = self.target_agent_id
             print(f"New target agent is {self.target_agent_id} based on configuration set")
 
     @pyqtSlot(int)
@@ -63,6 +65,7 @@ class MainWindow(QMainWindow):
         for agent in self.checkable_agents:
             agent.setChecked(False)
         self.checkable_agents[agent_id - 1].setChecked(True)
+        self.data_updater.target_agent_id = self.target_agent_id
         print(f"New target agent is {self.target_agent_id} based on greeting received")
 
     def create_2d_graph_area(self):
