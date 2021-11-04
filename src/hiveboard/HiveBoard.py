@@ -2,6 +2,7 @@ from threading import Thread
 from time import sleep
 
 from src.hiveboard.proto.message_pb2 import Greeting, Message, InterlocState, UNSUPORTED, STANDBY, ANGLE_CALIB_RECEIVER
+from src.hiveboard.proto.message_pb2 import GetNeighborsListRequest, HiveMindHostApiRequest, Request
 from src.hiveboard.proto.proto_stream import ProtoStream
 from src.AngleCalculatorParameters import AngleCalculatorParameters
 
@@ -113,6 +114,25 @@ class HiveBoard:
         msg.interloc.configure.configureAngleParameters.pdoaOrigins.extend(params.m_pdoaOrigins)
 
         self._proto_stream.write_message_to_stream(msg)
+
+    def send_get_neighbors_request(self, destination: int):
+        neighbors_request = GetNeighborsListRequest()
+
+        hivemind_api_request = HiveMindHostApiRequest()
+        hivemind_api_request.neighbors_list.CopyFrom(neighbors_request)
+
+        request = Request()
+        request.hivemind_host.CopyFrom(hivemind_api_request)
+
+        msg = Message()
+        msg.source_id = self.uuid
+        msg.destination_id = destination
+        msg.request.CopyFrom(request)
+
+        self._proto_stream.write_message_to_stream(msg)
+
+
+
 
 
     def _rx_msg_handler(self):

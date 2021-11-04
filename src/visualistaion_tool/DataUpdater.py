@@ -64,6 +64,9 @@ class DataUpdater(QObject):
             time.sleep(2)
         self.received_greeting.emit(self.hiveboard.uuid)
 
+    def send_neighbor_position_request(self):
+        self.hiveboard.send_get_neighbors_request(self.target_agent_id)
+
     def generate_random_data(self):
         while True:
             if self.hiveboard.uuid != 0 and self.target_agent_id != 0:
