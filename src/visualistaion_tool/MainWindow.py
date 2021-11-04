@@ -3,9 +3,11 @@ import time
 
 from PyQt5.QtWidgets import *
 from Graph2D import Graph2D
+from PyQt5.QtCore import QThread
 from pyqtgraph import PlotWidget, plot
 import pyqtgraph as pg
 import numpy as np
+from DataUpdater import DataUpdater
 
 
 class MainWindow(QMainWindow):
@@ -20,27 +22,17 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.graphWidget)
         self.create_menu_bar()
 
+        self.hiveboard = DataUpdater(self.graphWidget)
+        self.hiveboard_thread = QThread()
+        self.hiveboard.moveToThread(self.hiveboard_thread)
+        self.hiveboard_thread.started.connect(self.hiveboard.generate_random_data)
+        self.hiveboard_thread.start()
+
     def create_menu_bar(self):
         menu_bar = self.menuBar()
         config_menu = QMenu("&Configuration", self)
         menu_bar.addMenu(config_menu)
 
-        clear_action = QAction("Clear", self)
-        clear_action.setStatusTip("Update graph with test data")
-        clear_action.triggered.connect(self.graphWidget.clear_points)
-        menu_bar.addAction(clear_action)
-
-        add_action = QAction("Add data", self)
-        add_action.setStatusTip("Update graph with test data")
-        add_action.triggered.connect(self.run)
-        menu_bar.addAction(add_action)
-
-
-
-    def run(self, e):
-        n = 10
-        pos = np.random.normal(size=(2, n), scale=8)
-        self.graphWidget.update_points(pos.transpose())
 
 
 

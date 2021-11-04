@@ -1,7 +1,9 @@
 from PyQt5 import QtWidgets
+from PyQt5.QtCore import pyqtSlot
 from pyqtgraph import PlotWidget, plot
 import pyqtgraph as pg
 import numpy as np
+
 
 
 class Graph2D(QtWidgets.QWidget):
@@ -14,8 +16,8 @@ class Graph2D(QtWidgets.QWidget):
         self.graphWidget = pg.plot()
         self.graphWidget.setXRange(-15, 15)
         self.graphWidget.setYRange(-15, 15)
-        self.scatter = pg.ScatterPlotItem(size=10)
-        self.base = pg.ScatterPlotItem(size=10)
+        self.scatter = pg.ScatterPlotItem()
+        self.base = pg.ScatterPlotItem()
         base_symbol = {'pos': [0,0],
                 'pen': {'color': 'w', 'width': 1},
                 'brush': pg.intColor(10, 100),
@@ -23,21 +25,11 @@ class Graph2D(QtWidgets.QWidget):
                 'size': 30}
         self.base.addPoints([base_symbol])
         self.graphWidget.addItem(self.base)
-
-        n = 10
-        pos = np.random.normal(size=(2, n), scale=1)
-
-        # creating spots using the random position
-        spots_1 = [{'pos': pos[:, i], 'data': i}
-                 for i in range(n)] + [{'pos': [0, 0], 'data': 1}]
-
-        self.update_points(pos.transpose())
-        #self.scatter.addPoints(spots_1)
         self.graphWidget.addItem(self.scatter)
         self.layout.addWidget(self.graphWidget)
 
     def update_points(self, points: list):
-        self.clear_points()
+        self.scatter.clear()
         i = 0
         spots = []
         for i in range(len(points)):
@@ -47,8 +39,7 @@ class Graph2D(QtWidgets.QWidget):
             spots.append(spot)
             i += 1
         self.scatter.setData(spots)
-        self.graphWidget.addItem(self.scatter)
 
-    def clear_points(self):
-        self.graphWidget.removeItem(self.scatter)
-        self.scatter.clear()
+    @pyqtSlot(list)
+    def update_points_slot(self, points: list):
+        self.update_points(points)
