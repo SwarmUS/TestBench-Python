@@ -27,7 +27,10 @@ class DummyHiveBoard(ProtoStream):
         self.agent_list = [2, 3, 4, 5, 6]
 
     def __del__(self):
+        super().__del__()
         self.socket.close()
+        self._run = False
+        self.thread.join()
 
     def kill_stream(self):
         self._run = False
@@ -125,9 +128,12 @@ class DummyHiveBoard(ProtoStream):
 
 
 def main():
-    dummy = DummyHiveBoard(55551)
-    dummy.thread.start()
-    dummy.thread.join()
+    try:
+        dummy = DummyHiveBoard(55551)
+        dummy.thread.start()
+    except KeyboardInterrupt:
+        dummy._run = False
+        dummy.thread.join()
 
 
 if __name__ == "__main__":

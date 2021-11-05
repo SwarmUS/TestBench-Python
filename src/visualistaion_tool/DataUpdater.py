@@ -18,13 +18,14 @@ COM_PORT = "/dev/ttyUSB0"
 
 class DataUpdater(QObject):
     new_points = pyqtSignal(list)
+    new_point = pyqtSignal(int, float, float)
     received_greeting = pyqtSignal(int)
 
     def __init__(self, graph: Graph2D):
         super().__init__()
 
         self.graph = graph
-        self.new_points.connect(self.graph.update_points_slot)
+        self.new_point.connect(self.graph.update_point)
         self.hiveboard = None
         self.hiveboard_connnected = False
         self.target_agent_id = 0
@@ -78,9 +79,9 @@ class DataUpdater(QObject):
     def handle_neigbor_update(self, neighbor):
         x = neighbor.position.distance * np.cos(neighbor.position.azimuth)
         y = neighbor.position.distance * np.sin(neighbor.position.azimuth)
-        id = neighbor.neighbor_id
-        self.new_points.emit([[x, y]])
-        print(f"Agent {id} now at ({x},{y})")
+        neighbor_id = neighbor.neighbor_id
+        self.new_point.emit(neighbor_id, x, y)
+        print(f"Agent {neighbor_id} now at ({x},{y})")
 
     def generate_random_data(self):
         while True:

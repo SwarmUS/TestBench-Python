@@ -12,6 +12,7 @@ class Graph2D(QtWidgets.QWidget):
         super(Graph2D, self).__init__(parent)
         self.layout = QtWidgets.QGridLayout()
         self.setLayout(self.layout)
+        self.points = {}
 
         self.graphWidget = pg.plot()
         self.graphWidget.setXRange(-15, 15)
@@ -30,7 +31,6 @@ class Graph2D(QtWidgets.QWidget):
 
     def update_points(self, points: list):
         self.scatter.clear()
-        i = 0
         spots = []
         for i in range(len(points)):
             spot = {'pos': points[i],
@@ -43,3 +43,14 @@ class Graph2D(QtWidgets.QWidget):
     @pyqtSlot(list)
     def update_points_slot(self, points: list):
         self.update_points(points)
+
+    @pyqtSlot(int, float, float)
+    def update_point(self, neighbor_id: int, x: float, y: float):
+        self.points[neighbor_id] = {'pos': [x, y],
+                                    'pen': {'color': 'w', 'width': 1},
+                                    'brush': pg.intColor(neighbor_id * 15, 100),
+                                    'size': 20}
+        self.scatter.clear()
+        self.scatter.setData(list(self.points.values()))
+
+
