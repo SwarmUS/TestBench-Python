@@ -12,8 +12,8 @@ from usb_stream import UsbStream
 from proto import message_pb2
 from proto.ethernet_stream import EthernetStream
 
-use_serial = False
-COM_PORT = "/dev/ttyUSB0"
+use_serial = True
+COM_PORT = "/dev/ttyACM0"
 
 
 class DataUpdater(QObject):
@@ -63,7 +63,6 @@ class DataUpdater(QObject):
 
     def send_greet_message(self):
         while self.hiveboard.uuid == 0:
-            print("Sending greet")
             self.hiveboard.greet()
             time.sleep(2)
         self.received_greeting.emit(self.hiveboard.uuid)
