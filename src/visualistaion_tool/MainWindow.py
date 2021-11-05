@@ -76,5 +76,5 @@ class MainWindow(QMainWindow):
         self.data_updater = DataUpdater(self.graphWidget)
         self.data_updater_thread = QThread()
         self.data_updater.moveToThread(self.data_updater_thread)
-        self.data_updater_thread.started.connect(self.data_updater.generate_random_data)
+        self.data_updater_thread.started.connect(self.data_updater.request_neighbors_update)
         self.data_updater_thread.start()

@@ -59,8 +59,7 @@ class DataUpdater(QObject):
                 self.hiveboard = HiveBoard(self.tcp_stream)
                 self.hiveboard_connnected = True
         self.hiveboard.set_neighbor_list_callback(callback=self.handle_neighbor_list)
-        #TODO: define and set callback
-        self.hiveboard.set_neighbor_position_callback(callback=None)
+        self.hiveboard.set_neighbor_position_callback(callback=self.handle_neigbor_update)
 
     def send_greet_message(self):
         while self.hiveboard.uuid == 0:
@@ -76,6 +75,13 @@ class DataUpdater(QObject):
         self.neighbor_list = neighbor_list
         print(f"New neighbor list is {self.neighbor_list}")
 
+    def handle_neigbor_update(self, neighbor):
+        x = neighbor.position.distance * np.cos(neighbor.position.azimuth)
+        y = neighbor.position.distance * np.sin(neighbor.position.azimuth)
+        id = neighbor.neighbor_id
+        self.new_points.emit([[x, y]])
+        print(f"Agent {id} now at ({x},{y})")
+
     def generate_random_data(self):
         while True:
             if self.hiveboard.uuid != 0 and self.target_agent_id != 0:
@@ -83,3 +89,15 @@ class DataUpdater(QObject):
                 pos = np.random.normal(size=(2, n), scale=8)
                 self.new_points.emit(pos.transpose().tolist())
                 time.sleep(1)
+
+    def request_neighbors_update(self):
+        while True:
+            if self.hiveboard.uuid != 0 and self.target_agent_id != 0:
+
+                if len(self.neighbor_list) == 0:
+                    self.refresh_neighbor_list()
+
+                for neighbor_id in self.neighbor_list:
+                    self.hiveboard.send_get_neighbor_position_request(destination=self.target_agent_id,
+                                                                      neighbor_id=neighbor_id)
+            time.sleep(0.2)

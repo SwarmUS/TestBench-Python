@@ -2,8 +2,8 @@ from threading import Thread
 from time import sleep
 
 from src.hiveboard.proto.message_pb2 import Greeting, Message, InterlocState, UNSUPORTED, STANDBY, ANGLE_CALIB_RECEIVER
-from src.hiveboard.proto.message_pb2 import GetNeighborsListRequest, HiveMindHostApiRequest, Request
-from src.hiveboard.proto.message_pb2 import GetNeighborsListResponse, HiveMindHostApiResponse, Response
+from src.hiveboard.proto.message_pb2 import GetNeighborsListRequest, HiveMindHostApiRequest, Request, GetNeighborRequest
+from src.hiveboard.proto.message_pb2 import GetNeighborsListResponse, HiveMindHostApiResponse, Response, GetNeighborResponse
 from src.hiveboard.proto.proto_stream import ProtoStream
 from src.AngleCalculatorParameters import AngleCalculatorParameters
 
@@ -133,6 +133,23 @@ class HiveBoard:
 
         request = Request()
         request.hivemind_host.CopyFrom(hivemind_api_request)
+
+        msg = Message()
+        msg.source_id = self.uuid
+        msg.destination_id = destination
+        msg.request.CopyFrom(request)
+
+        self._proto_stream.write_message_to_stream(msg)
+
+    def send_get_neighbor_position_request(self, destination: int, neighbor_id: id):
+        neighbor_position_request = GetNeighborRequest()
+        neighbor_position_request.neighbor_id = neighbor_id
+
+        hivemind_host_api_request = HiveMindHostApiRequest()
+        hivemind_host_api_request.neighbor.CopyFrom(neighbor_position_request)
+
+        request = Request()
+        request.hivemind_host.CopyFrom(hivemind_host_api_request)
 
         msg = Message()
         msg.source_id = self.uuid

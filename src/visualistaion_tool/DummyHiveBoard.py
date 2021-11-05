@@ -8,7 +8,8 @@ import numpy as np
 sys.path.insert(0, "../hiveboard")
 
 from proto.message_pb2 import Greeting, Message, InterlocState, UNSUPORTED, STANDBY, ANGLE_CALIB_RECEIVER
-from src.hiveboard.proto.message_pb2 import GetNeighborsListResponse, HiveMindHostApiResponse, Response, GetNeighborResponse, NeighborPosition
+from src.hiveboard.proto.message_pb2 import GetNeighborsListResponse, HiveMindHostApiResponse, Response, \
+    GetNeighborResponse, NeighborPosition
 from src.hiveboard.proto.message_pb2 import GetNeighborsListRequest, GetNeighborRequest, HiveMindHostApiRequest, Request
 from proto.proto_stream import ProtoStream
 
@@ -64,7 +65,7 @@ class DummyHiveBoard(ProtoStream):
                     self.send_greet()
 
                 elif msg.HasField("request"):
-                    self.send_neighbor_list()
+                    self.handle_requests(msg.request)
 
     def send_greet(self):
         greet = Greeting()
@@ -102,8 +103,8 @@ class DummyHiveBoard(ProtoStream):
 
     def send_neighbor_position(self, neighbor):
         neighbor_position = NeighborPosition()
-        neighbor_position.distance = random.random() * 10 # All positions will be within 8 meters of center
-        neighbor_position.azimuth = random.random() * 2 * np.pi # Angle between 0 and 2pi
+        neighbor_position.distance = random.random() * 10  # All positions will be within 10 meters of center
+        neighbor_position.azimuth = random.random() * 360  # Angle between 0 and 360 degrees
         neighbor_position.in_los = True
 
         neighbor_response = GetNeighborResponse()
@@ -121,7 +122,6 @@ class DummyHiveBoard(ProtoStream):
         msg.destination_id = self.uuid
         msg.response.CopyFrom(response)
         self.write_message_to_stream(msg)
-
 
 
 def main():
