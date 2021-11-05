@@ -17,7 +17,6 @@ COM_PORT = "/dev/ttyUSB0"
 
 
 class DataUpdater(QObject):
-    new_points = pyqtSignal(list)
     new_point = pyqtSignal(int, float, float)
     received_greeting = pyqtSignal(int)
 
@@ -82,14 +81,6 @@ class DataUpdater(QObject):
         neighbor_id = neighbor.neighbor_id
         self.new_point.emit(neighbor_id, x, y)
         print(f"Agent {neighbor_id} now at ({x},{y})")
-
-    def generate_random_data(self):
-        while True:
-            if self.hiveboard.uuid != 0 and self.target_agent_id != 0:
-                n = 10
-                pos = np.random.normal(size=(2, n), scale=8)
-                self.new_points.emit(pos.transpose().tolist())
-                time.sleep(1)
 
     def request_neighbors_update(self):
         while True:

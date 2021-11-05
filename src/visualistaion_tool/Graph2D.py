@@ -4,7 +4,7 @@ from pyqtgraph import PlotWidget, plot
 import pyqtgraph as pg
 import numpy as np
 
-
+COLOR_OFFSET = 15
 
 class Graph2D(QtWidgets.QWidget):
 
@@ -21,7 +21,7 @@ class Graph2D(QtWidgets.QWidget):
         self.base = pg.ScatterPlotItem()
         base_symbol = {'pos': [0,0],
                 'pen': {'color': 'w', 'width': 1},
-                'brush': pg.intColor(10, 100),
+                'brush': pg.intColor(10, 100), # Orange
                 'symbol': 'd',
                 'size': 30}
         self.base.addPoints([base_symbol])
@@ -29,26 +29,13 @@ class Graph2D(QtWidgets.QWidget):
         self.graphWidget.addItem(self.scatter)
         self.layout.addWidget(self.graphWidget)
 
-    def update_points(self, points: list):
-        self.scatter.clear()
-        spots = []
-        for i in range(len(points)):
-            spot = {'pos': points[i],
-                    'pen': {'color': 'w', 'width': 1},
-                    'brush': pg.intColor(i * 10, 100)}
-            spots.append(spot)
-            i += 1
-        self.scatter.setData(spots)
-
-    @pyqtSlot(list)
-    def update_points_slot(self, points: list):
-        self.update_points(points)
-
     @pyqtSlot(int, float, float)
     def update_point(self, neighbor_id: int, x: float, y: float):
         self.points[neighbor_id] = {'pos': [x, y],
                                     'pen': {'color': 'w', 'width': 1},
-                                    'brush': pg.intColor(neighbor_id * 15, 100),
+                                    # 100 is the number int values for the color spectrum,
+                                    # COLOR_OFFSET is the offset to apply to have 6 different values for points
+                                    'brush': pg.intColor(neighbor_id * COLOR_OFFSET, 100),
                                     'size': 20}
         self.scatter.clear()
         self.scatter.setData(list(self.points.values()))
