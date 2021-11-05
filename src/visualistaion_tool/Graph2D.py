@@ -15,8 +15,8 @@ class Graph2D(QtWidgets.QWidget):
         self.points = {}
 
         self.graphWidget = pg.plot()
-        self.graphWidget.setXRange(-15, 15)
-        self.graphWidget.setYRange(-15, 15)
+        self.graphWidget.setXRange(-7, 7)
+        self.graphWidget.setYRange(-7, 7)
         self.scatter = pg.ScatterPlotItem()
         self.base = pg.ScatterPlotItem()
         base_symbol = {'pos': [0,0],
