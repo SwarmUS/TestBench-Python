@@ -22,8 +22,7 @@ class DummyHiveBoard(ProtoStream):
         self.uuid = 1
 
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.thread = threading.Thread(target=self.handle_inbound_messages())
-
+        self.thread = threading.Thread(target=self.handle_inbound_messages)
         self.agent_list = [2, 3, 4, 5, 6]
 
     def __del__(self):
@@ -36,7 +35,6 @@ class DummyHiveBoard(ProtoStream):
     def _read_from_stream(self, num_bytes: int):
         data = self.socket.recv(num_bytes)
         while len(data) < num_bytes and self._run:
-            print("Did not receive enough bytes")
             data += self.socket.recv(num_bytes - len(data))
 
         if not self._run:
@@ -48,7 +46,7 @@ class DummyHiveBoard(ProtoStream):
         self.socket.send(data)
 
     def handle_inbound_messages(self):
-        while True:
+        while self._run:
             if not self.socket_connected:
                 try:
                     self.socket.connect(("127.0.0.1", self.tcp_port))
@@ -66,7 +64,7 @@ class DummyHiveBoard(ProtoStream):
                     self.send_greet()
 
                 elif msg.HasField("request"):
-                    self.send_dummy_data()
+                    self.send_neighbor_list()
 
     def send_greet(self):
         greet = Greeting()
@@ -74,7 +72,7 @@ class DummyHiveBoard(ProtoStream):
         msg = Message()
         msg.greeting.CopyFrom(greet)
         msg.source_id = self.uuid
-        msg.destination_id = self.uui
+        msg.destination_id = self.uuid
         self.write_message_to_stream(msg)
 
     def handle_requests(self, request: Request):
@@ -88,7 +86,7 @@ class DummyHiveBoard(ProtoStream):
 
     def send_neighbor_list(self):
         neighbor_list = GetNeighborsListResponse()
-        neighbor_list.neighbors = self.agent_list
+        neighbor_list.neighbors.extend(self.agent_list)
 
         api_response = HiveMindHostApiResponse()
         api_response.neighbors_list.CopyFrom(neighbor_list)
@@ -100,7 +98,7 @@ class DummyHiveBoard(ProtoStream):
         msg.source_id = self.uuid
         msg.destination_id = self.uuid
         msg.response.CopyFrom(response)
-        self._write_to_stream(msg)
+        self.write_message_to_stream(msg)
 
     def send_neighbor_position(self, neighbor):
         neighbor_position = NeighborPosition()
@@ -122,7 +120,7 @@ class DummyHiveBoard(ProtoStream):
         msg.source_id = self.uuid
         msg.destination_id = self.uuid
         msg.response.CopyFrom(response)
-        self._write_to_stream(msg)
+        self.write_message_to_stream(msg)
 
 
 
