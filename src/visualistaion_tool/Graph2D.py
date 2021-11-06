@@ -2,9 +2,9 @@ from PyQt5 import QtWidgets
 from PyQt5.QtCore import pyqtSlot
 from pyqtgraph import PlotWidget, plot, GridItem
 import pyqtgraph as pg
-import numpy as np
 
 COLOR_OFFSET = 15
+
 
 class Graph2D(QtWidgets.QWidget):
 
@@ -26,11 +26,11 @@ class Graph2D(QtWidgets.QWidget):
         self.graphWidget.setYRange(-7, 7)
         self.scatter = pg.ScatterPlotItem()
         self.base = pg.ScatterPlotItem()
-        base_symbol = {'pos': [0,0],
-                'pen': {'color': 'w', 'width': 1},
-                'brush': pg.intColor(10, 100), # Orange
-                'symbol': 'd',
-                'size': 30}
+        base_symbol = {'pos': [0, 0],
+                       'pen': {'color': 'w', 'width': 1},
+                       'brush': pg.intColor(10, 100),  # Orange
+                       'symbol': 'd',
+                       'size': 30}
         self.base.addPoints([base_symbol])
         self.graphWidget.addItem(self.base)
         self.graphWidget.addItem(self.scatter)
@@ -46,5 +46,3 @@ class Graph2D(QtWidgets.QWidget):
                                     'size': 20}
         self.scatter.clear()
         self.scatter.setData(list(self.points.values()))
-
-
