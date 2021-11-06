@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import pyqtSlot
-from pyqtgraph import PlotWidget, plot
+from pyqtgraph import PlotWidget, plot, GridItem
 import pyqtgraph as pg
 import numpy as np
 
@@ -15,6 +15,13 @@ class Graph2D(QtWidgets.QWidget):
         self.points = {}
 
         self.graphWidget = pg.plot()
+        self.graphWidget.setBackground("w")
+        self.graphWidget.hideAxis('bottom')
+        self.graphWidget.hideAxis('left')
+        self.graphWidget.setMouseEnabled(x=False, y=False)
+
+        self.grid = GridItem(pen='black', textPen='black')
+        self.graphWidget.addItem(self.grid)
         self.graphWidget.setXRange(-7, 7)
         self.graphWidget.setYRange(-7, 7)
         self.scatter = pg.ScatterPlotItem()
