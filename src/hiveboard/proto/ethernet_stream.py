@@ -10,6 +10,9 @@ class EthernetStream(ProtoStream):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client_socket: [socket, None] = None
 
+    def __del__(self):
+        super().__del__()
+
     def wait_connection(self):
         print(f'Starting socket on port {self._tcp_port}')
         print('Waiting for client connection')
