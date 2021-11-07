@@ -14,16 +14,27 @@ class Graph2D(QtWidgets.QWidget):
         self.setLayout(self.layout)
         self.points = {}
 
+        self.create_2d_plot()
+        self.create_grid()
+        self.create_scatter_element()
+
+
+
+    def create_2d_plot(self):
         self.graphWidget = pg.plot()
         self.graphWidget.setBackground("w")
         self.graphWidget.hideAxis('bottom')
         self.graphWidget.hideAxis('left')
-        self.graphWidget.setMouseEnabled(x=False, y=False)
-
-        self.grid = GridItem(pen='black', textPen='black')
-        self.graphWidget.addItem(self.grid)
         self.graphWidget.setXRange(-7, 7)
         self.graphWidget.setYRange(-7, 7)
+        self.graphWidget.setMouseEnabled(x=False, y=False)
+        self.layout.addWidget(self.graphWidget)
+
+    def create_grid(self):
+        self.grid = GridItem(pen='black', textPen='black')
+        self.graphWidget.addItem(self.grid)
+
+    def create_scatter_element(self):
         self.scatter = pg.ScatterPlotItem()
         self.base = pg.ScatterPlotItem()
         base_symbol = {'pos': [0, 0],
@@ -34,7 +45,7 @@ class Graph2D(QtWidgets.QWidget):
         self.base.addPoints([base_symbol])
         self.graphWidget.addItem(self.base)
         self.graphWidget.addItem(self.scatter)
-        self.layout.addWidget(self.graphWidget)
+
 
     @pyqtSlot(int, float, float)
     def update_point(self, neighbor_id: int, x: float, y: float):
