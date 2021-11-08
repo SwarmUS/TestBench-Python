@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QAction, QTableWidget, QTableWidgetItem, QVBoxLayout
+from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QSizePolicy
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot, Qt
 import PyQt5
@@ -6,9 +6,6 @@ import sys
 
 
 class NeighborCoordinateTable(QTableWidget):
-    data = {'col1': ['1', '2', '3', '4'],
-            'col2': ['1', '2', '1', '3'],
-            'col3': ['1', '1', '2', '1']}
     headers = ["Neighbor ID", "Name", "Distance", "Theta (degrees)"]
 
     def __init__(self, *args):
@@ -20,6 +17,8 @@ class NeighborCoordinateTable(QTableWidget):
         self.resizeColumnsToContents()
         self.resizeRowsToContents()
         self.cellChanged.connect(self.on_cell_changed)
+        self.setMinimumWidth(int(self.width() / 2.2)) # Magic number to fix scaling
+        self.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum))
 
     # Allows modification by user only on the second column (Name)
     def edit(self, index, trigger, event):
