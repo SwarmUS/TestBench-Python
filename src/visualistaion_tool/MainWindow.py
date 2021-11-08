@@ -3,7 +3,7 @@ import time
 
 from PyQt5.QtWidgets import *
 from Graph2D import Graph2D
-from PyQt5.QtCore import QThread, pyqtSlot
+from PyQt5.QtCore import QThread, pyqtSlot, Qt
 from pyqtgraph import PlotWidget, plot
 import pyqtgraph as pg
 import numpy as np
@@ -19,10 +19,8 @@ class MainWindow(QMainWindow):
 
         # Qt shenaninigans
         self.setWindowTitle("SwarmUS Interlocalisation Visualisation Tool")
-        self.container = QWidget()
-        self.main_layout = QHBoxLayout()
-        self.container.setLayout(self.main_layout)
-        self.setCentralWidget(self.container)
+        self.splitter = QSplitter(Qt.Horizontal)
+        self.setCentralWidget(self.splitter)
 
         # Create UI elements here
         self.create_2d_graph_area()
@@ -73,13 +71,12 @@ class MainWindow(QMainWindow):
 
     def create_2d_graph_area(self):
         self.graphWidget = Graph2D(self)
-        self.main_layout.addWidget(self.graphWidget, 80)
+        self.splitter.addWidget(self.graphWidget)
 
     def create_neighbor_table(self):
-        self.neighbor_table = NeighborCoordinateTable(4, 3)
+        self.neighbor_table = NeighborCoordinateTable(3, 4)
         self.neighbor_table.setData()
-        self.main_layout.addWidget(self.neighbor_table, 20)
-
+        self.splitter.addWidget(self.neighbor_table)
 
     def start_data_acquisition(self):
         self.data_updater = DataUpdater(self.graphWidget)
