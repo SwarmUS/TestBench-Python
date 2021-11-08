@@ -13,9 +13,9 @@ class NeighborCoordinateTable(QTableWidget):
 
     def __init__(self, *args):
         QTableWidget.__init__(self, *args)
+        self.setWindowTitle("Neighbor List")
         self.neighbors = {}
         self.verticalHeader().setVisible(False)
-        self.setData()
         self.setHorizontalHeaderLabels(self.headers)
         self.resizeColumnsToContents()
         self.resizeRowsToContents()
@@ -27,14 +27,6 @@ class NeighborCoordinateTable(QTableWidget):
             trigger = self.NoEditTriggers
         return super().edit(index, trigger, event)
 
-    def setData(self):
-        horHeaders = []
-        for n, key in enumerate(sorted(self.data.keys())):
-            horHeaders.append(key)
-            for m, item in enumerate(self.data[key]):
-                newitem = QTableWidgetItem(item)
-                self.setItem(n, m, newitem)
-
     @pyqtSlot(int, int)
     def on_cell_changed(self, _, __):
         self.resizeColumnsToContents()
@@ -43,7 +35,7 @@ class NeighborCoordinateTable(QTableWidget):
     @pyqtSlot(int, float, float)
     def update_neighbor(self, neighbor_id: int, distance: float, theta: float):
         if neighbor_id not in self.neighbors.keys():
-            self.neighbors.update({neighbor_id: {"cell_id": QTableWidgetItem(neighbor_id),
+            self.neighbors.update({neighbor_id: {"cell_id": QTableWidgetItem(str(neighbor_id)),
                                                  "cell_name": QTableWidgetItem(f"agent {neighbor_id}"),
                                                  "cell_distance": QTableWidgetItem(distance),
                                                  "cell_theta": QTableWidgetItem(theta)}
@@ -56,6 +48,6 @@ class NeighborCoordinateTable(QTableWidget):
                 column += 1
             self.sortByColumn(0, Qt.DescendingOrder)
         else:
-            self.neighbors[neighbor_id]["cell_distance"].setData(distance)
-            self.neighbors[neighbor_id]["cell_theta"].setData(theta)
+            self.neighbors[neighbor_id]["cell_distance"].setData(0, distance)
+            self.neighbors[neighbor_id]["cell_theta"].setData(0, theta)
 

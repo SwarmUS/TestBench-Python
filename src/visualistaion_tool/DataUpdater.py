@@ -2,6 +2,7 @@ import threading
 import time
 
 from Graph2D import Graph2D
+from NeighborCoordinateTable import NeighborCoordinateTable
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
 import numpy as np
 import sys
@@ -17,14 +18,17 @@ COM_PORT = "/dev/ttyACM0"
 
 
 class DataUpdater(QObject):
-    new_point = pyqtSignal(int, float, float)
+    new_cartesian_point = pyqtSignal(int, float, float)
+    new_polar_point = pyqtSignal(int, float, float)
     received_greeting = pyqtSignal(int)
 
-    def __init__(self, graph: Graph2D):
+    def __init__(self, graph: Graph2D, table: NeighborCoordinateTable):
         super().__init__()
 
         self.graph = graph
-        self.new_point.connect(self.graph.update_point)
+        self.neighbor_table = table
+        self.new_cartesian_point.connect(self.graph.update_point)
+        self.new_polar_point.connect(self.neighbor_table.update_neighbor)
         self.hiveboard = None
         self.hiveboard_connnected = False
         self.target_agent_id = 0
@@ -78,8 +82,8 @@ class DataUpdater(QObject):
         y = neighbor.position.distance * np.cos(neighbor.position.azimuth / 180 * np.pi)
         x = neighbor.position.distance * np.sin(neighbor.position.azimuth / 180 * np.pi)
         neighbor_id = neighbor.neighbor_id
-        self.new_point.emit(neighbor_id, x, y)
-        print(f"Agent {neighbor_id} now at ({x},{y})")
+        self.new_cartesian_point.emit(neighbor_id, x, y)
+        self.new_polar_point.emit(neighbor_id, neighbor.position.azimuth, neighbor.position.distance)
 
     def request_neighbors_update(self):
         while True:

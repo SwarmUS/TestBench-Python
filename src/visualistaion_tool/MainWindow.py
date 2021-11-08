@@ -74,12 +74,11 @@ class MainWindow(QMainWindow):
         self.splitter.addWidget(self.graphWidget)
 
     def create_neighbor_table(self):
-        self.neighbor_table = NeighborCoordinateTable(3, 4)
-        self.neighbor_table.setData()
+        self.neighbor_table = NeighborCoordinateTable(0, 4)
         self.splitter.addWidget(self.neighbor_table)
 
     def start_data_acquisition(self):
-        self.data_updater = DataUpdater(self.graphWidget)
+        self.data_updater = DataUpdater(self.graphWidget, self.neighbor_table)
         self.data_updater_thread = QThread()
         self.data_updater.moveToThread(self.data_updater_thread)
         self.data_updater_thread.started.connect(self.data_updater.request_neighbors_update)
