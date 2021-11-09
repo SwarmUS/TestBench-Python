@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='',
   syntax='proto3',
   serialized_options=_b('\n\022com.swarmus.hivear'),
-  serialized_pb=_b('\n\x13proto/message.proto\"J\n\x0fGenericResponse\x12&\n\x06status\x18\x01 \x01(\x0e\x32\x16.GenericResponseStatus\x12\x0f\n\x07\x64\x65tails\x18\x02 \x01(\t\"F\n\x10\x46unctionArgument\x12\x11\n\x07int_arg\x18\x01 \x01(\x03H\x00\x12\x13\n\tfloat_arg\x18\x02 \x01(\x02H\x00\x42\n\n\x08\x61rgument\"R\n\x13\x46unctionCallRequest\x12\x15\n\rfunction_name\x18\x01 \x01(\t\x12$\n\targuments\x18\x02 \x03(\x0b\x32\x11.FunctionArgument\":\n\x14\x46unctionCallResponse\x12\"\n\x08response\x18\x01 \x01(\x0b\x32\x10.GenericResponse\"\x1b\n\x19\x46unctionListLengthRequest\";\n\x1a\x46unctionListLengthResponse\x12\x1d\n\x15\x66unction_array_length\x18\x01 \x01(\r\"d\n\x1b\x46unctionDescriptionArgument\x12\x15\n\rargument_name\x18\x01 \x01(\t\x12.\n\x04type\x18\x02 \x01(\x0e\x32 .FunctionDescriptionArgumentType\"i\n\x13\x46unctionDescription\x12\x15\n\rfunction_name\x18\x01 \x01(\t\x12;\n\x15\x61rguments_description\x18\x02 \x03(\x0b\x32\x1c.FunctionDescriptionArgument\"9\n\x1a\x46unctionDescriptionRequest\x12\x1b\n\x13\x66unction_list_index\x18\x01 \x01(\r\"\x84\x01\n\x1b\x46unctionDescriptionResponse\x12#\n\x07generic\x18\x01 \x01(\x0b\x32\x10.GenericResponseH\x00\x12\x34\n\x14\x66unction_description\x18\x02 \x01(\x0b\x32\x14.FunctionDescriptionH\x00\x42\n\n\x08response\"\x8b\x02\n\x0fUserCallRequest\x12$\n\x0b\x64\x65stination\x18\x01 \x01(\x0e\x32\x0f.UserCallTarget\x12\x1f\n\x06source\x18\x02 \x01(\x0e\x32\x0f.UserCallTarget\x12-\n\rfunction_call\x18\x03 \x01(\x0b\x32\x14.FunctionCallRequestH\x00\x12:\n\x14\x66unction_list_length\x18\x04 \x01(\x0b\x32\x1a.FunctionListLengthRequestH\x00\x12;\n\x14\x66unction_description\x18\x05 \x01(\x0b\x32\x1b.FunctionDescriptionRequestH\x00\x42\t\n\x07request\"\xb5\x02\n\x10UserCallResponse\x12$\n\x0b\x64\x65stination\x18\x01 \x01(\x0e\x32\x0f.UserCallTarget\x12\x1f\n\x06source\x18\x02 \x01(\x0e\x32\x0f.UserCallTarget\x12#\n\x07generic\x18\x03 \x01(\x0b\x32\x10.GenericResponseH\x00\x12.\n\rfunction_call\x18\x04 \x01(\x0b\x32\x15.FunctionCallResponseH\x00\x12;\n\x14\x66unction_list_length\x18\x05 \x01(\x0b\x32\x1b.FunctionListLengthResponseH\x00\x12<\n\x14\x66unction_description\x18\x06 \x01(\x0b\x32\x1c.FunctionDescriptionResponseH\x00\x42\n\n\x08response\"S\n\x05\x42ytes\x12\x11\n\tpacket_id\x18\x01 \x01(\r\x12\x11\n\tpacket_no\x18\x02 \x01(\r\x12\x13\n\x0blast_packet\x18\x03 \x01(\x08\x12\x0f\n\x07payload\x18\x04 \x01(\x0c\"E\n\x10NeighborPosition\x12\x10\n\x08\x64istance\x18\x01 \x01(\x02\x12\x0f\n\x07\x61zimuth\x18\x02 \x01(\x02\x12\x0e\n\x06in_los\x18\x03 \x01(\x08\")\n\x12GetNeighborRequest\x12\x13\n\x0bneighbor_id\x18\x01 \x01(\r\"\x19\n\x17GetNeighborsListRequest\"\x16\n\x14GetAgentsListRequest\"O\n\x13GetNeighborResponse\x12\x13\n\x0bneighbor_id\x18\x01 \x01(\r\x12#\n\x08position\x18\x02 \x01(\x0b\x32\x11.NeighborPosition\"-\n\x18GetNeighborsListResponse\x12\x11\n\tneighbors\x18\x01 \x03(\r\"\'\n\x15GetAgentsListResponse\x12\x0e\n\x06\x61gents\x18\x01 \x03(\r\"\xc7\x01\n\x16HiveMindHostApiRequest\x12\x17\n\x05\x62ytes\x18\x01 \x01(\x0b\x32\x06.BytesH\x00\x12\'\n\x08neighbor\x18\x02 \x01(\x0b\x32\x13.GetNeighborRequestH\x00\x12\x32\n\x0eneighbors_list\x18\x03 \x01(\x0b\x32\x18.GetNeighborsListRequestH\x00\x12,\n\x0b\x61gents_list\x18\x04 \x01(\x0b\x32\x15.GetAgentsListRequestH\x00\x42\t\n\x07request\"\xb3\x01\n\x17HiveMindHostApiResponse\x12(\n\x08neighbor\x18\x01 \x01(\x0b\x32\x14.GetNeighborResponseH\x00\x12\x33\n\x0eneighbors_list\x18\x02 \x01(\x0b\x32\x19.GetNeighborsListResponseH\x00\x12-\n\x0b\x61gents_list\x18\x03 \x01(\x0b\x32\x16.GetAgentsListResponseH\x00\x42\n\n\x08response\":\n\x18HiveConnectNetworkAccess\x12\x0c\n\x04ssid\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"&\n\x13HiveConnectRootNode\x12\x0f\n\x07is_root\x18\x01 \x01(\x08\")\n\x15HiveConnectMeshEnable\x12\x10\n\x08use_mesh\x18\x01 \x01(\x08\"\xad\x01\n\"HiveConnectNetworkConfigSetRequest\x12\x31\n\x0enetwork_access\x18\x01 \x01(\x0b\x32\x19.HiveConnectNetworkAccess\x12\'\n\troot_node\x18\x02 \x01(\x0b\x32\x14.HiveConnectRootNode\x12+\n\x0bmesh_enable\x18\x03 \x01(\x0b\x32\x16.HiveConnectMeshEnable\"I\n#HiveConnectNetworkConfigSetResponse\x12\"\n\x08response\x18\x01 \x01(\x0b\x32\x10.GenericResponse\"$\n\"HiveConnectNetworkConfigGetRequest\"\xae\x01\n#HiveConnectNetworkConfigGetResponse\x12\x31\n\x0enetwork_access\x18\x01 \x01(\x0b\x32\x19.HiveConnectNetworkAccess\x12\'\n\troot_node\x18\x02 \x01(\x0b\x32\x14.HiveConnectRootNode\x12+\n\x0bmesh_enable\x18\x03 \x01(\x0b\x32\x16.HiveConnectMeshEnable\"\xc3\x03\n\x16HiveConnectHiveMindApi\x12\x12\n\nmessage_id\x18\x01 \x01(\r\x12+\n\nagents_req\x18\x02 \x01(\x0b\x32\x15.GetAgentsListRequestH\x00\x12-\n\x0b\x61gents_resp\x18\x03 \x01(\x0b\x32\x16.GetAgentsListResponseH\x00\x12I\n\x1anetwork_config_set_request\x18\x04 \x01(\x0b\x32#.HiveConnectNetworkConfigSetRequestH\x00\x12K\n\x1bnetwork_config_set_response\x18\x05 \x01(\x0b\x32$.HiveConnectNetworkConfigSetResponseH\x00\x12I\n\x1anetwork_config_get_request\x18\x06 \x01(\x0b\x32#.HiveConnectNetworkConfigGetRequestH\x00\x12K\n\x1bnetwork_config_get_response\x18\x07 \x01(\x0b\x32$.HiveConnectNetworkConfigGetResponseH\x00\x42\t\n\x07message\"\x1e\n\x0b\x42uzzMessage\x12\x0f\n\x07payload\x18\x01 \x01(\x0c\".\n\x0c\x42uzzMessages\x12\x1e\n\x08messages\x18\x01 \x03(\x0b\x32\x0c.BuzzMessage\"5\n\tVmMessage\x12\x1d\n\x04\x62uzz\x18\x01 \x01(\x0b\x32\r.BuzzMessagesH\x00\x42\t\n\x07message\"y\n\x07Request\x12\n\n\x02id\x18\x01 \x01(\r\x12%\n\tuser_call\x18\x02 \x01(\x0b\x32\x10.UserCallRequestH\x00\x12\x30\n\rhivemind_host\x18\x03 \x01(\x0b\x32\x17.HiveMindHostApiRequestH\x00\x42\t\n\x07message\"\xa1\x01\n\x08Response\x12\n\n\x02id\x18\x01 \x01(\r\x12#\n\x07generic\x18\x02 \x01(\x0b\x32\x10.GenericResponseH\x00\x12&\n\tuser_call\x18\x03 \x01(\x0b\x32\x11.UserCallResponseH\x00\x12\x31\n\rhivemind_host\x18\x04 \x01(\x0b\x32\x18.HiveMindHostApiResponseH\x00\x42\t\n\x07message\"\x1c\n\x08Greeting\x12\x10\n\x08\x61gent_id\x18\x01 \x01(\r\"\x19\n\x0bIPDiscovery\x12\n\n\x02ip\x18\x01 \x01(\r\"9\n\nNetworkAPI\x12#\n\x0bipDiscovery\x18\x01 \x01(\x0b\x32\x0c.IPDiscoveryH\x00\x42\x06\n\x04\x63\x61ll\"1\n\x10SetInterlocState\x12\x1d\n\x05state\x18\x01 \x01(\x0e\x32\x0e.InterlocState\"3\n\x19\x43onfigureAngleCalibration\x12\x16\n\x0enumberOfFrames\x18\x01 \x01(\r\"+\n\x17\x43onfigureTWRCalibration\x12\x10\n\x08\x64istance\x18\x01 \x01(\x02\"(\n\x16\x43onfigureInterlocDumps\x12\x0e\n\x06\x65nable\x18\x01 \x01(\x08\"\x86\x02\n\x18\x43onfigureAngleParameters\x12\x13\n\x0b\x61nglePairId\x18\x01 \x01(\x05\x12\x10\n\x08\x61ntennas\x18\x02 \x03(\x05\x12\x15\n\rslopeDecision\x18\x03 \x03(\x05\x12\x1f\n\x17tdoaNormalizationFactor\x18\x04 \x01(\x02\x12\x12\n\ntdoaSlopes\x18\x05 \x03(\x02\x12\x16\n\x0etdoaIntercepts\x18\x06 \x03(\x02\x12\x1f\n\x17pdoaNormalizationFactor\x18\x07 \x01(\x02\x12\x11\n\tpdoaSlope\x18\x08 \x01(\x02\x12\x16\n\x0epdoaIntercepts\x18\t \x03(\x02\x12\x13\n\x0bpdoaOrigins\x18\n \x03(\x02\"\xa7\x02\n\x15InterlocConfiguration\x12?\n\x19\x63onfigureAngleCalibration\x18\x01 \x01(\x0b\x32\x1a.ConfigureAngleCalibrationH\x00\x12;\n\x17\x63onfigureTWRCalibration\x18\x02 \x01(\x0b\x32\x18.ConfigureTWRCalibrationH\x00\x12\x39\n\x16\x63onfigureInterlocDumps\x18\x03 \x01(\x0b\x32\x17.ConfigureInterlocDumpsH\x00\x12=\n\x18\x63onfigureAngleParameters\x18\x04 \x01(\x0b\x32\x19.ConfigureAngleParametersH\x00\x42\x16\n\x14\x63onfigurationMessage\"\x7f\n\x13InterlocRxFrameInfo\x12\x14\n\x0c\x62\x65\x65\x62oardPort\x18\x01 \x01(\r\x12\x13\n\x0brxTimestamp\x18\x02 \x01(\x04\x12\x10\n\x08sfdAngle\x18\x03 \x01(\x02\x12\x18\n\x10\x61\x63\x63umulatorAngle\x18\x04 \x01(\x02\x12\x11\n\tmessageId\x18\x05 \x01(\r\"X\n\x1bInterlocRxFrameRawAngleData\x12\x0f\n\x07\x66rameId\x18\x01 \x01(\r\x12(\n\nframeInfos\x18\x02 \x03(\x0b\x32\x14.InterlocRxFrameInfo\"D\n\x14InterlocRawAngleData\x12,\n\x06\x66rames\x18\x01 \x03(\x0b\x32\x1c.InterlocRxFrameRawAngleData\"^\n\x13InterlocStateChange\x12%\n\rpreviousState\x18\x01 \x01(\x0e\x32\x0e.InterlocState\x12 \n\x08newState\x18\x02 \x01(\x0e\x32\x0e.InterlocState\"=\n\x0cInterlocDump\x12-\n\x0fpositionUpdates\x18\x02 \x03(\x0b\x32\x14.GetNeighborResponse\"\xab\x01\n\x15InterlocOutputMessage\x12+\n\x0bstateChange\x18\x01 \x01(\x0b\x32\x14.InterlocStateChangeH\x00\x12-\n\x0crawAngleData\x18\x02 \x01(\x0b\x32\x15.InterlocRawAngleDataH\x00\x12%\n\x0cinterlocDump\x18\x03 \x01(\x0b\x32\r.InterlocDumpH\x00\x42\x0f\n\routputMessage\"\x96\x01\n\x0bInterlocAPI\x12%\n\x08setState\x18\x01 \x01(\x0b\x32\x11.SetInterlocStateH\x00\x12+\n\tconfigure\x18\x02 \x01(\x0b\x32\x16.InterlocConfigurationH\x00\x12(\n\x06output\x18\x03 \x01(\x0b\x32\x16.InterlocOutputMessageH\x00\x42\t\n\x07message\"\xaf\x02\n\x07Message\x12\x11\n\tsource_id\x18\x01 \x01(\r\x12\x16\n\x0e\x64\x65stination_id\x18\x02 \x01(\r\x12\x1b\n\x07request\x18\x03 \x01(\x0b\x32\x08.RequestH\x00\x12\x1d\n\x08response\x18\x04 \x01(\x0b\x32\t.ResponseH\x00\x12\x1d\n\x08greeting\x18\x05 \x01(\x0b\x32\t.GreetingH\x00\x12\x18\n\x02vm\x18\x06 \x01(\x0b\x32\n.VmMessageH\x00\x12\x1e\n\x07network\x18\x07 \x01(\x0b\x32\x0b.NetworkAPIH\x00\x12 \n\x08interloc\x18\x08 \x01(\x0b\x32\x0c.InterlocAPIH\x00\x12\x37\n\x14hiveconnect_hivemind\x18\t \x01(\x0b\x32\x17.HiveConnectHiveMindApiH\x00\x42\t\n\x07message*;\n\x15GenericResponseStatus\x12\x06\n\x02OK\x10\x00\x12\x0f\n\x0b\x42\x41\x44_REQUEST\x10\x01\x12\t\n\x05\x45RROR\x10\x02*G\n\x1f\x46unctionDescriptionArgumentType\x12\x10\n\x0cUNKNOWN_TYPE\x10\x00\x12\x07\n\x03INT\x10\x01\x12\t\n\x05\x46LOAT\x10\x02*1\n\x0eUserCallTarget\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x08\n\x04HOST\x10\x01\x12\x08\n\x04\x42UZZ\x10\x02*\x9f\x01\n\rInterlocState\x12\x0e\n\nUNSUPORTED\x10\x00\x12\x0b\n\x07STANDBY\x10\x01\x12\r\n\tOPERATING\x10\x02\x12\x16\n\x12\x41NGLE_CALIB_SENDER\x10\x03\x12\x18\n\x14\x41NGLE_CALIB_RECEIVER\x10\x04\x12\x17\n\x13TWR_CALIB_INITIATOR\x10\x05\x12\x17\n\x13TWR_CALIB_RESPONDER\x10\x06\x42\x14\n\x12\x63om.swarmus.hivearb\x06proto3')
+  serialized_pb=_b('\n\x13proto/message.proto\"J\n\x0fGenericResponse\x12&\n\x06status\x18\x01 \x01(\x0e\x32\x16.GenericResponseStatus\x12\x0f\n\x07\x64\x65tails\x18\x02 \x01(\t\"F\n\x10\x46unctionArgument\x12\x11\n\x07int_arg\x18\x01 \x01(\x03H\x00\x12\x13\n\tfloat_arg\x18\x02 \x01(\x02H\x00\x42\n\n\x08\x61rgument\"R\n\x13\x46unctionCallRequest\x12\x15\n\rfunction_name\x18\x01 \x01(\t\x12$\n\targuments\x18\x02 \x03(\x0b\x32\x11.FunctionArgument\":\n\x14\x46unctionCallResponse\x12\"\n\x08response\x18\x01 \x01(\x0b\x32\x10.GenericResponse\"\x1b\n\x19\x46unctionListLengthRequest\";\n\x1a\x46unctionListLengthResponse\x12\x1d\n\x15\x66unction_array_length\x18\x01 \x01(\r\"d\n\x1b\x46unctionDescriptionArgument\x12\x15\n\rargument_name\x18\x01 \x01(\t\x12.\n\x04type\x18\x02 \x01(\x0e\x32 .FunctionDescriptionArgumentType\"i\n\x13\x46unctionDescription\x12\x15\n\rfunction_name\x18\x01 \x01(\t\x12;\n\x15\x61rguments_description\x18\x02 \x03(\x0b\x32\x1c.FunctionDescriptionArgument\"9\n\x1a\x46unctionDescriptionRequest\x12\x1b\n\x13\x66unction_list_index\x18\x01 \x01(\r\"\x84\x01\n\x1b\x46unctionDescriptionResponse\x12#\n\x07generic\x18\x01 \x01(\x0b\x32\x10.GenericResponseH\x00\x12\x34\n\x14\x66unction_description\x18\x02 \x01(\x0b\x32\x14.FunctionDescriptionH\x00\x42\n\n\x08response\"\x8b\x02\n\x0fUserCallRequest\x12$\n\x0b\x64\x65stination\x18\x01 \x01(\x0e\x32\x0f.UserCallTarget\x12\x1f\n\x06source\x18\x02 \x01(\x0e\x32\x0f.UserCallTarget\x12-\n\rfunction_call\x18\x03 \x01(\x0b\x32\x14.FunctionCallRequestH\x00\x12:\n\x14\x66unction_list_length\x18\x04 \x01(\x0b\x32\x1a.FunctionListLengthRequestH\x00\x12;\n\x14\x66unction_description\x18\x05 \x01(\x0b\x32\x1b.FunctionDescriptionRequestH\x00\x42\t\n\x07request\"\xb5\x02\n\x10UserCallResponse\x12$\n\x0b\x64\x65stination\x18\x01 \x01(\x0e\x32\x0f.UserCallTarget\x12\x1f\n\x06source\x18\x02 \x01(\x0e\x32\x0f.UserCallTarget\x12#\n\x07generic\x18\x03 \x01(\x0b\x32\x10.GenericResponseH\x00\x12.\n\rfunction_call\x18\x04 \x01(\x0b\x32\x15.FunctionCallResponseH\x00\x12;\n\x14\x66unction_list_length\x18\x05 \x01(\x0b\x32\x1b.FunctionListLengthResponseH\x00\x12<\n\x14\x66unction_description\x18\x06 \x01(\x0b\x32\x1c.FunctionDescriptionResponseH\x00\x42\n\n\x08response\"S\n\x05\x42ytes\x12\x11\n\tpacket_id\x18\x01 \x01(\r\x12\x11\n\tpacket_no\x18\x02 \x01(\r\x12\x13\n\x0blast_packet\x18\x03 \x01(\x08\x12\x0f\n\x07payload\x18\x04 \x01(\x0c\"E\n\x10NeighborPosition\x12\x10\n\x08\x64istance\x18\x01 \x01(\x02\x12\x0f\n\x07\x61zimuth\x18\x02 \x01(\x02\x12\x0e\n\x06in_los\x18\x03 \x01(\x08\")\n\x12GetNeighborRequest\x12\x13\n\x0bneighbor_id\x18\x01 \x01(\r\"\x19\n\x17GetNeighborsListRequest\"\x16\n\x14GetAgentsListRequest\"O\n\x13GetNeighborResponse\x12\x13\n\x0bneighbor_id\x18\x01 \x01(\r\x12#\n\x08position\x18\x02 \x01(\x0b\x32\x11.NeighborPosition\"-\n\x18GetNeighborsListResponse\x12\x11\n\tneighbors\x18\x01 \x03(\r\"\'\n\x15GetAgentsListResponse\x12\x0e\n\x06\x61gents\x18\x01 \x03(\r\"\xc7\x01\n\x16HiveMindHostApiRequest\x12\x17\n\x05\x62ytes\x18\x01 \x01(\x0b\x32\x06.BytesH\x00\x12\'\n\x08neighbor\x18\x02 \x01(\x0b\x32\x13.GetNeighborRequestH\x00\x12\x32\n\x0eneighbors_list\x18\x03 \x01(\x0b\x32\x18.GetNeighborsListRequestH\x00\x12,\n\x0b\x61gents_list\x18\x04 \x01(\x0b\x32\x15.GetAgentsListRequestH\x00\x42\t\n\x07request\"\xb3\x01\n\x17HiveMindHostApiResponse\x12(\n\x08neighbor\x18\x01 \x01(\x0b\x32\x14.GetNeighborResponseH\x00\x12\x33\n\x0eneighbors_list\x18\x02 \x01(\x0b\x32\x19.GetNeighborsListResponseH\x00\x12-\n\x0b\x61gents_list\x18\x03 \x01(\x0b\x32\x16.GetAgentsListResponseH\x00\x42\n\n\x08response\":\n\x18HiveConnectNetworkAccess\x12\x0c\n\x04ssid\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"&\n\x13HiveConnectRootNode\x12\x0f\n\x07is_root\x18\x01 \x01(\x08\")\n\x15HiveConnectMeshEnable\x12\x10\n\x08use_mesh\x18\x01 \x01(\x08\"\xad\x01\n\"HiveConnectNetworkConfigSetRequest\x12\x31\n\x0enetwork_access\x18\x01 \x01(\x0b\x32\x19.HiveConnectNetworkAccess\x12\'\n\troot_node\x18\x02 \x01(\x0b\x32\x14.HiveConnectRootNode\x12+\n\x0bmesh_enable\x18\x03 \x01(\x0b\x32\x16.HiveConnectMeshEnable\"I\n#HiveConnectNetworkConfigSetResponse\x12\"\n\x08response\x18\x01 \x01(\x0b\x32\x10.GenericResponse\"$\n\"HiveConnectNetworkConfigGetRequest\"\xae\x01\n#HiveConnectNetworkConfigGetResponse\x12\x31\n\x0enetwork_access\x18\x01 \x01(\x0b\x32\x19.HiveConnectNetworkAccess\x12\'\n\troot_node\x18\x02 \x01(\x0b\x32\x14.HiveConnectRootNode\x12+\n\x0bmesh_enable\x18\x03 \x01(\x0b\x32\x16.HiveConnectMeshEnable\"\xc3\x03\n\x16HiveConnectHiveMindApi\x12\x12\n\nmessage_id\x18\x01 \x01(\r\x12+\n\nagents_req\x18\x02 \x01(\x0b\x32\x15.GetAgentsListRequestH\x00\x12-\n\x0b\x61gents_resp\x18\x03 \x01(\x0b\x32\x16.GetAgentsListResponseH\x00\x12I\n\x1anetwork_config_set_request\x18\x04 \x01(\x0b\x32#.HiveConnectNetworkConfigSetRequestH\x00\x12K\n\x1bnetwork_config_set_response\x18\x05 \x01(\x0b\x32$.HiveConnectNetworkConfigSetResponseH\x00\x12I\n\x1anetwork_config_get_request\x18\x06 \x01(\x0b\x32#.HiveConnectNetworkConfigGetRequestH\x00\x12K\n\x1bnetwork_config_get_response\x18\x07 \x01(\x0b\x32$.HiveConnectNetworkConfigGetResponseH\x00\x42\t\n\x07message\"\x1e\n\x0b\x42uzzMessage\x12\x0f\n\x07payload\x18\x01 \x01(\x0c\".\n\x0c\x42uzzMessages\x12\x1e\n\x08messages\x18\x01 \x03(\x0b\x32\x0c.BuzzMessage\"5\n\tVmMessage\x12\x1d\n\x04\x62uzz\x18\x01 \x01(\x0b\x32\r.BuzzMessagesH\x00\x42\t\n\x07message\"y\n\x07Request\x12\n\n\x02id\x18\x01 \x01(\r\x12%\n\tuser_call\x18\x02 \x01(\x0b\x32\x10.UserCallRequestH\x00\x12\x30\n\rhivemind_host\x18\x03 \x01(\x0b\x32\x17.HiveMindHostApiRequestH\x00\x42\t\n\x07message\"\xa1\x01\n\x08Response\x12\n\n\x02id\x18\x01 \x01(\r\x12#\n\x07generic\x18\x02 \x01(\x0b\x32\x10.GenericResponseH\x00\x12&\n\tuser_call\x18\x03 \x01(\x0b\x32\x11.UserCallResponseH\x00\x12\x31\n\rhivemind_host\x18\x04 \x01(\x0b\x32\x18.HiveMindHostApiResponseH\x00\x42\t\n\x07message\"\x1c\n\x08Greeting\x12\x10\n\x08\x61gent_id\x18\x01 \x01(\r\"\x19\n\x0bIPDiscovery\x12\n\n\x02ip\x18\x01 \x01(\r\"9\n\nNetworkAPI\x12#\n\x0bipDiscovery\x18\x01 \x01(\x0b\x32\x0c.IPDiscoveryH\x00\x42\x06\n\x04\x63\x61ll\"1\n\x10SetInterlocState\x12\x1d\n\x05state\x18\x01 \x01(\x0e\x32\x0e.InterlocState\"3\n\x19\x43onfigureAngleCalibration\x12\x16\n\x0enumberOfFrames\x18\x01 \x01(\r\"+\n\x17\x43onfigureTWRCalibration\x12\x10\n\x08\x64istance\x18\x01 \x01(\x02\"(\n\x16\x43onfigureInterlocDumps\x12\x0e\n\x06\x65nable\x18\x01 \x01(\x08\"\xa5\x01\n\x18\x43onfigureAngleParameters\x12\x13\n\x0b\x61nglePairId\x18\x01 \x01(\x05\x12\x10\n\x08\x61ntennas\x18\x02 \x03(\x05\x12\x15\n\rslopeDecision\x18\x03 \x03(\x05\x12\x1f\n\x17pdoaNormalizationFactor\x18\x04 \x01(\x02\x12\x12\n\npdoaSlopes\x18\x05 \x03(\x02\x12\x16\n\x0epdoaIntercepts\x18\x06 \x03(\x02\"\xa7\x02\n\x15InterlocConfiguration\x12?\n\x19\x63onfigureAngleCalibration\x18\x01 \x01(\x0b\x32\x1a.ConfigureAngleCalibrationH\x00\x12;\n\x17\x63onfigureTWRCalibration\x18\x02 \x01(\x0b\x32\x18.ConfigureTWRCalibrationH\x00\x12\x39\n\x16\x63onfigureInterlocDumps\x18\x03 \x01(\x0b\x32\x17.ConfigureInterlocDumpsH\x00\x12=\n\x18\x63onfigureAngleParameters\x18\x04 \x01(\x0b\x32\x19.ConfigureAngleParametersH\x00\x42\x16\n\x14\x63onfigurationMessage\"\x7f\n\x13InterlocRxFrameInfo\x12\x14\n\x0c\x62\x65\x65\x62oardPort\x18\x01 \x01(\r\x12\x13\n\x0brxTimestamp\x18\x02 \x01(\x04\x12\x10\n\x08sfdAngle\x18\x03 \x01(\x02\x12\x18\n\x10\x61\x63\x63umulatorAngle\x18\x04 \x01(\x02\x12\x11\n\tmessageId\x18\x05 \x01(\r\"X\n\x1bInterlocRxFrameRawAngleData\x12\x0f\n\x07\x66rameId\x18\x01 \x01(\r\x12(\n\nframeInfos\x18\x02 \x03(\x0b\x32\x14.InterlocRxFrameInfo\"D\n\x14InterlocRawAngleData\x12,\n\x06\x66rames\x18\x01 \x03(\x0b\x32\x1c.InterlocRxFrameRawAngleData\"^\n\x13InterlocStateChange\x12%\n\rpreviousState\x18\x01 \x01(\x0e\x32\x0e.InterlocState\x12 \n\x08newState\x18\x02 \x01(\x0e\x32\x0e.InterlocState\"=\n\x0cInterlocDump\x12-\n\x0fpositionUpdates\x18\x02 \x03(\x0b\x32\x14.GetNeighborResponse\"\xab\x01\n\x15InterlocOutputMessage\x12+\n\x0bstateChange\x18\x01 \x01(\x0b\x32\x14.InterlocStateChangeH\x00\x12-\n\x0crawAngleData\x18\x02 \x01(\x0b\x32\x15.InterlocRawAngleDataH\x00\x12%\n\x0cinterlocDump\x18\x03 \x01(\x0b\x32\r.InterlocDumpH\x00\x42\x0f\n\routputMessage\"\x96\x01\n\x0bInterlocAPI\x12%\n\x08setState\x18\x01 \x01(\x0b\x32\x11.SetInterlocStateH\x00\x12+\n\tconfigure\x18\x02 \x01(\x0b\x32\x16.InterlocConfigurationH\x00\x12(\n\x06output\x18\x03 \x01(\x0b\x32\x16.InterlocOutputMessageH\x00\x42\t\n\x07message\"\xaf\x02\n\x07Message\x12\x11\n\tsource_id\x18\x01 \x01(\r\x12\x16\n\x0e\x64\x65stination_id\x18\x02 \x01(\r\x12\x1b\n\x07request\x18\x03 \x01(\x0b\x32\x08.RequestH\x00\x12\x1d\n\x08response\x18\x04 \x01(\x0b\x32\t.ResponseH\x00\x12\x1d\n\x08greeting\x18\x05 \x01(\x0b\x32\t.GreetingH\x00\x12\x18\n\x02vm\x18\x06 \x01(\x0b\x32\n.VmMessageH\x00\x12\x1e\n\x07network\x18\x07 \x01(\x0b\x32\x0b.NetworkAPIH\x00\x12 \n\x08interloc\x18\x08 \x01(\x0b\x32\x0c.InterlocAPIH\x00\x12\x37\n\x14hiveconnect_hivemind\x18\t \x01(\x0b\x32\x17.HiveConnectHiveMindApiH\x00\x42\t\n\x07message*;\n\x15GenericResponseStatus\x12\x06\n\x02OK\x10\x00\x12\x0f\n\x0b\x42\x41\x44_REQUEST\x10\x01\x12\t\n\x05\x45RROR\x10\x02*G\n\x1f\x46unctionDescriptionArgumentType\x12\x10\n\x0cUNKNOWN_TYPE\x10\x00\x12\x07\n\x03INT\x10\x01\x12\t\n\x05\x46LOAT\x10\x02*1\n\x0eUserCallTarget\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x08\n\x04HOST\x10\x01\x12\x08\n\x04\x42UZZ\x10\x02*\x9f\x01\n\rInterlocState\x12\x0e\n\nUNSUPORTED\x10\x00\x12\x0b\n\x07STANDBY\x10\x01\x12\r\n\tOPERATING\x10\x02\x12\x16\n\x12\x41NGLE_CALIB_SENDER\x10\x03\x12\x18\n\x14\x41NGLE_CALIB_RECEIVER\x10\x04\x12\x17\n\x13TWR_CALIB_INITIATOR\x10\x05\x12\x17\n\x13TWR_CALIB_RESPONDER\x10\x06\x42\x14\n\x12\x63om.swarmus.hivearb\x06proto3')
 )
 
 _GENERICRESPONSESTATUS = _descriptor.EnumDescriptor(
@@ -44,8 +44,8 @@ _GENERICRESPONSESTATUS = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=5629,
-  serialized_end=5688,
+  serialized_start=5532,
+  serialized_end=5591,
 )
 _sym_db.RegisterEnumDescriptor(_GENERICRESPONSESTATUS)
 
@@ -71,8 +71,8 @@ _FUNCTIONDESCRIPTIONARGUMENTTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=5690,
-  serialized_end=5761,
+  serialized_start=5593,
+  serialized_end=5664,
 )
 _sym_db.RegisterEnumDescriptor(_FUNCTIONDESCRIPTIONARGUMENTTYPE)
 
@@ -98,8 +98,8 @@ _USERCALLTARGET = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=5763,
-  serialized_end=5812,
+  serialized_start=5666,
+  serialized_end=5715,
 )
 _sym_db.RegisterEnumDescriptor(_USERCALLTARGET)
 
@@ -141,8 +141,8 @@ _INTERLOCSTATE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=5815,
-  serialized_end=5974,
+  serialized_start=5718,
+  serialized_end=5877,
 )
 _sym_db.RegisterEnumDescriptor(_INTERLOCSTATE)
 
@@ -1796,50 +1796,22 @@ _CONFIGUREANGLEPARAMETERS = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='tdoaNormalizationFactor', full_name='ConfigureAngleParameters.tdoaNormalizationFactor', index=3,
+      name='pdoaNormalizationFactor', full_name='ConfigureAngleParameters.pdoaNormalizationFactor', index=3,
       number=4, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='tdoaSlopes', full_name='ConfigureAngleParameters.tdoaSlopes', index=4,
+      name='pdoaSlopes', full_name='ConfigureAngleParameters.pdoaSlopes', index=4,
       number=5, type=2, cpp_type=6, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='tdoaIntercepts', full_name='ConfigureAngleParameters.tdoaIntercepts', index=5,
+      name='pdoaIntercepts', full_name='ConfigureAngleParameters.pdoaIntercepts', index=5,
       number=6, type=2, cpp_type=6, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='pdoaNormalizationFactor', full_name='ConfigureAngleParameters.pdoaNormalizationFactor', index=6,
-      number=7, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='pdoaSlope', full_name='ConfigureAngleParameters.pdoaSlope', index=7,
-      number=8, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='pdoaIntercepts', full_name='ConfigureAngleParameters.pdoaIntercepts', index=8,
-      number=9, type=2, cpp_type=6, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='pdoaOrigins', full_name='ConfigureAngleParameters.pdoaOrigins', index=9,
-      number=10, type=2, cpp_type=6, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -1857,7 +1829,7 @@ _CONFIGUREANGLEPARAMETERS = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=3986,
-  serialized_end=4248,
+  serialized_end=4151,
 )
 
 
@@ -1911,8 +1883,8 @@ _INTERLOCCONFIGURATION = _descriptor.Descriptor(
       name='configurationMessage', full_name='InterlocConfiguration.configurationMessage',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=4251,
-  serialized_end=4546,
+  serialized_start=4154,
+  serialized_end=4449,
 )
 
 
@@ -1970,8 +1942,8 @@ _INTERLOCRXFRAMEINFO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4548,
-  serialized_end=4675,
+  serialized_start=4451,
+  serialized_end=4578,
 )
 
 
@@ -2008,8 +1980,8 @@ _INTERLOCRXFRAMERAWANGLEDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4677,
-  serialized_end=4765,
+  serialized_start=4580,
+  serialized_end=4668,
 )
 
 
@@ -2039,8 +2011,8 @@ _INTERLOCRAWANGLEDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4767,
-  serialized_end=4835,
+  serialized_start=4670,
+  serialized_end=4738,
 )
 
 
@@ -2077,8 +2049,8 @@ _INTERLOCSTATECHANGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4837,
-  serialized_end=4931,
+  serialized_start=4740,
+  serialized_end=4834,
 )
 
 
@@ -2108,8 +2080,8 @@ _INTERLOCDUMP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4933,
-  serialized_end=4994,
+  serialized_start=4836,
+  serialized_end=4897,
 )
 
 
@@ -2156,8 +2128,8 @@ _INTERLOCOUTPUTMESSAGE = _descriptor.Descriptor(
       name='outputMessage', full_name='InterlocOutputMessage.outputMessage',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=4997,
-  serialized_end=5168,
+  serialized_start=4900,
+  serialized_end=5071,
 )
 
 
@@ -2204,8 +2176,8 @@ _INTERLOCAPI = _descriptor.Descriptor(
       name='message', full_name='InterlocAPI.message',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=5171,
-  serialized_end=5321,
+  serialized_start=5074,
+  serialized_end=5224,
 )
 
 
@@ -2294,8 +2266,8 @@ _MESSAGE = _descriptor.Descriptor(
       name='message', full_name='Message.message',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=5324,
-  serialized_end=5627,
+  serialized_start=5227,
+  serialized_end=5530,
 )
 
 _GENERICRESPONSE.fields_by_name['status'].enum_type = _GENERICRESPONSESTATUS
