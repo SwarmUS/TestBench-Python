@@ -18,7 +18,7 @@ class AngleCalculatorParameters:
 
     # Normalization factors used to stretch PDOA angles between -90 and +90 degrees. (Applied by
     # dividing by the normalization after applying the asin() on the PDOA)
-    # m_pdoaNormalizationFactors = None
+    m_pdoaNormalizationFactors = None
 
     # Slopes (a in y=ax+b) of the non-reciprocated PDOA functions (calculatedAngle = a*realAngle+b)
     # A single (positive) slope is used for all PDOA curves. The sign of the slope is applied at

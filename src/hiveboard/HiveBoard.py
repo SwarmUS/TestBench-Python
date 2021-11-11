@@ -35,7 +35,8 @@ class HiveBoard:
             1: 1,
             5: 2
         }
-        self._decision_matrix = [[0, 0, 1], [1, 0, 1], [0, 0, 0]]
+        # self._decision_matrix = [[0, 0, 1], [1, 0, 1], [0, 0, 0]]
+        self._decision_matrix = [[-1, 0, 1], [1, -1, 1], [0, 0, -1]]
 
     def set_neighbor_list_callback(self, callback):
         self.neighbors_list_callback = callback
@@ -114,7 +115,7 @@ class HiveBoard:
         msg.interloc.configure.configureAngleParameters.antennas.extend(params.m_antennaPairs)
         msg.interloc.configure.configureAngleParameters.slopeDecision.extend(self._decision_matrix[pair_id])
 
-        msg.interloc.configure.configureAngleParameters.pdoaNormalizationFactor = 1
+        msg.interloc.configure.configureAngleParameters.pdoaNormalizationFactor = params.m_pdoaNormalizationFactors
         msg.interloc.configure.configureAngleParameters.pdoaSlopes.extend(params.m_pdoaSlopes)
         msg.interloc.configure.configureAngleParameters.pdoaIntercepts.extend(params.m_pdoaIntercepts)
 
