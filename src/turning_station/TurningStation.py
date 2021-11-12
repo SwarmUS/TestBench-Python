@@ -48,7 +48,12 @@ class TurningStation():
     def getPosition(self):
         # sleep(1)
         self.sendMsg("positionis;")
-        return self.ser.read_until()
+        pos =  self.ser.read_until().decode()
+        while not pos[0:-1].isnumeric():
+            pos = self.ser.read_until().decode()
+
+        # print(int(pos))
+        return pos
 
     def goToTick(self, tick):
         self.setAngle(tick)
@@ -56,16 +61,13 @@ class TurningStation():
 
         while self.getStatus().decode() != "done\n":
                 sleep(0.1)
-        position = 0
-        try:
-            position = self.getPosition().decode()
-        except:
-            position = self.getPosition().decode()
-        finally:
-            if int(position) > (tick + 1):
-                self.goToTick(tick)
-            elif int(position) < (tick - 1):
-                self.goToTick(tick)
+
+        position = self.getPosition()
+
+        if int(position) > (tick + 5):
+            self.goToTick(tick)
+        elif int(position) < (tick - 5):
+            self.goToTick(tick)
 
 
 
