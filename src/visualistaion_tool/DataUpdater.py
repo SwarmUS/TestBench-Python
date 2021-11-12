@@ -91,4 +91,4 @@ class DataUpdater(QObject):
                 for neighbor_id in self.neighbor_list:
                     self.hiveboard.send_get_neighbor_position_request(destination=self.target_agent_id,
                                                                       neighbor_id=neighbor_id)
-            time.sleep(0.2)
+            time.sleep(0.1)

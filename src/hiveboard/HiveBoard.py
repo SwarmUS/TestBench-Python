@@ -36,7 +36,7 @@ class HiveBoard:
             5: 2
         }
         # self._decision_matrix = [[0, 0, 1], [1, 0, 1], [0, 0, 0]]
-        self._decision_matrix = [[-1, 1, 0], [0, -1, 0], [1, 1, -1]]
+        self._decision_matrix = [[-1, 0, 1], [1, -1, 1], [0, 0, -1]]
 
     def set_neighbor_list_callback(self, callback):
         self.neighbors_list_callback = callback
