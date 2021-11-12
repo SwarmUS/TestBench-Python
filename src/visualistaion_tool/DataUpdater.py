@@ -75,7 +75,7 @@ class DataUpdater(QObject):
         print(f"New neighbor list is {self.neighbor_list}")
 
     def handle_neigbor_update(self, neighbor):
-        y = -neighbor.position.distance * np.cos(neighbor.position.azimuth / 180 * np.pi)
+        y = neighbor.position.distance * np.cos(neighbor.position.azimuth / 180 * np.pi)
         x = neighbor.position.distance * np.sin(neighbor.position.azimuth / 180 * np.pi)
         neighbor_id = neighbor.neighbor_id
         self.new_point.emit(neighbor_id, x, y)
