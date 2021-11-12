@@ -20,7 +20,7 @@ class Graph2D(QtWidgets.QWidget):
 
     def create_2d_plot(self):
         self.graphWidget = pg.plot()
-        self.graphWidget.setBackground("w")
+        #self.graphWidget.setBackground("w")
         self.graphWidget.hideAxis('bottom')
         self.graphWidget.hideAxis('left')
         self.graphWidget.setXRange(-7, 7)
@@ -30,7 +30,7 @@ class Graph2D(QtWidgets.QWidget):
         self.layout.addWidget(self.graphWidget)
 
     def create_grid(self):
-        self.grid = GridItem(pen='black', textPen='black')
+        self.grid = GridItem(pen='white', textPen='white')
         self.graphWidget.addItem(self.grid)
 
     def create_scatter_element(self):

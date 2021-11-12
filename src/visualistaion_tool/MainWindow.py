@@ -67,7 +67,7 @@ class MainWindow(QMainWindow):
                     new_agent_id = self.checkable_agents.index(agent) + 1
             self.target_agent_id = new_agent_id
             self.data_updater.target_agent_id = self.target_agent_id
-            self.data_updater.neighbor_list.clear()
+            del self.data_updater.neighbor_list[:]
             print(f"New target agent is {self.target_agent_id} based on configuration set")
 
     @pyqtSlot(int)
