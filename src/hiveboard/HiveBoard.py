@@ -2,7 +2,15 @@ from threading import Thread
 from time import sleep
 
 from src.hiveboard.proto.message_pb2 import Greeting, Message, InterlocState, UNSUPORTED, STANDBY, ANGLE_CALIB_RECEIVER
+from src.hiveboard.proto.message_pb2 import GetNeighborsListRequest, HiveMindHostApiRequest, Request, GetNeighborRequest
+from src.hiveboard.proto.message_pb2 import GetNeighborsListResponse, HiveMindHostApiResponse, Response, GetNeighborResponse
 from src.hiveboard.proto.proto_stream import ProtoStream
+from src.AngleCalculatorParameters import AngleCalculatorParameters
+
+
+def _fill_proto_list(proto_field, values_list):
+    for i, val in enumerate(values_list):
+        proto_field[i] = val
 
 
 class HiveBoard:
@@ -11,6 +19,7 @@ class HiveBoard:
         self.interloc_state = UNSUPORTED
 
         self.angle_date = []
+        self.interloc_data = {}
 
         self._run = True
         self._proto_stream = proto_stream
@@ -18,12 +27,30 @@ class HiveBoard:
         self._rx_thread.start()
         self._log = log
 
+        self.neighbors_list_callback = None
+        self.neighbor_position_callback = None
+
+        self._id_map = {
+            0: 0,
+            1: 1,
+            5: 2
+        }
+        self._decision_matrix = [[0, 0, 1], [1, 0, 1], [0, 0, 0]]
+
+    def set_neighbor_list_callback(self, callback):
+        self.neighbors_list_callback = callback
+
+    def set_neighbor_position_callback(self, callback):
+        self.neighbor_position_callback = callback
+
     def kill_receiver(self):
         self._run = False
         self._proto_stream.kill_stream()
 
     def greet(self):
         greet = Greeting()
+        # Patch for message to be longer than 4 bytes so that python can deserialize its own messages
+        greet.agent_id = 1
         msg = Message()
         msg.greeting.CopyFrom(greet)
 
@@ -67,6 +94,74 @@ class HiveBoard:
         msg.interloc.configure.configureAngleCalibration.numberOfFrames = num_frames
         self._proto_stream.write_message_to_stream(msg)
 
+    def enable_interloc_dumps(self, enabled: bool):
+        msg = Message()
+        msg.source_id = self.uuid
+        msg.destination_id = self.uuid
+
+        msg.interloc.configure.configureInterlocDumps.enable = enabled
+        self._proto_stream.write_message_to_stream(msg)
+
+    def set_angle_parameters(self, params: AngleCalculatorParameters):
+        msg = Message()
+        msg.source_id = self.uuid
+        msg.destination_id = self.uuid
+
+        pair_id = self._id_map[params.m_pairID]
+
+        msg.interloc.configure.configureAngleParameters.anglePairId = pair_id
+
+        msg.interloc.configure.configureAngleParameters.antennas.extend(params.m_antennaPairs)
+        msg.interloc.configure.configureAngleParameters.slopeDecision.extend(self._decision_matrix[pair_id])
+
+        msg.interloc.configure.configureAngleParameters.tdoaNormalizationFactor = params.m_tdoaNormalizationFactors
+        msg.interloc.configure.configureAngleParameters.tdoaSlopes.extend(params.m_tdoaSlopes)
+        msg.interloc.configure.configureAngleParameters.tdoaIntercepts.extend(params.m_tdoaIntercepts)
+
+        msg.interloc.configure.configureAngleParameters.pdoaNormalizationFactor = params.m_pdoaNormalizationFactors
+        msg.interloc.configure.configureAngleParameters.pdoaSlope = params.m_pdoaSlopes
+        msg.interloc.configure.configureAngleParameters.pdoaIntercepts.extend(params.m_pdoaIntercepts)
+        msg.interloc.configure.configureAngleParameters.pdoaOrigins.extend(params.m_pdoaOrigins)
+
+        self._proto_stream.write_message_to_stream(msg)
+
+    def send_get_neighbors_request(self, destination: int):
+        neighbors_request = GetNeighborsListRequest()
+
+        hivemind_api_request = HiveMindHostApiRequest()
+        hivemind_api_request.neighbors_list.CopyFrom(neighbors_request)
+
+        request = Request()
+        request.hivemind_host.CopyFrom(hivemind_api_request)
+
+        msg = Message()
+        msg.source_id = self.uuid
+        msg.destination_id = destination
+        msg.request.CopyFrom(request)
+
+        self._proto_stream.write_message_to_stream(msg)
+
+    def send_get_neighbor_position_request(self, destination: int, neighbor_id: id):
+        neighbor_position_request = GetNeighborRequest()
+        neighbor_position_request.neighbor_id = neighbor_id
+
+        hivemind_host_api_request = HiveMindHostApiRequest()
+        hivemind_host_api_request.neighbor.CopyFrom(neighbor_position_request)
+
+        request = Request()
+        request.hivemind_host.CopyFrom(hivemind_host_api_request)
+
+        msg = Message()
+        msg.source_id = self.uuid
+        msg.destination_id = destination
+        msg.request.CopyFrom(request)
+
+        self._proto_stream.write_message_to_stream(msg)
+
+
+
+
+
     def _rx_msg_handler(self):
         while self._run:
             msg = self._proto_stream.read_message_from_stream()
@@ -78,6 +173,8 @@ class HiveBoard:
                 self._handle_greet_response(msg.greeting)
             elif msg.HasField("interloc"):
                 self._handle_interloc_message(msg.interloc.output)
+            elif msg.HasField("response"):
+                self._parse_and_handle_response(msg.response)
             else:
                 print(f'Received unhandled message: {msg}')
 
@@ -92,8 +189,10 @@ class HiveBoard:
             if self._log:
                 print(f'Interloc state change {prev_state} --> {new_state}')
             self.interloc_state = interloc_output.stateChange.newState
-        else:
+        elif interloc_output.HasField("rawAngleData"):
             self._handle_angle_data(interloc_output.rawAngleData)
+        elif interloc_output.HasField("interlocDump"):
+            self._handle_interloc_dump(interloc_output.interlocDump)
 
     def _handle_angle_data(self, angle_data):
         for frame in angle_data.frames:
@@ -109,4 +208,35 @@ class HiveBoard:
                 obj[f'BB_{port} Message ID'] = beeboard.messageId
 
             self.angle_date.append(obj)
+
+    def _handle_interloc_dump(self, dump):
+        print("Received interloc updates")
+
+        for update in dump.positionUpdates:
+            id = update.neighbor_id
+
+            obj = {
+                "Distance": update.position.distance,
+                "Azimuth": update.position.azimuth,
+                "LoS": update.position.in_los
+            }
+
+            if id in self.interloc_data.keys():
+                self.interloc_data[id].append(obj)
+            else:
+                self.interloc_data[id] = [obj]
+
+    def _parse_and_handle_response(self, response : Response):
+        if response.HasField("hivemind_host"):
+            hivemind_host_api_response = response.hivemind_host
+            if hivemind_host_api_response.HasField("neighbors_list") and self.neighbors_list_callback:
+                neighbors_list = hivemind_host_api_response.neighbors_list
+                self.neighbors_list_callback(neighbors_list.neighbors)
+            elif hivemind_host_api_response.HasField("neighbor") and self.neighbor_position_callback:
+                neighbor = hivemind_host_api_response.neighbor
+                self.neighbor_position_callback(neighbor)
+
+
+
+
 

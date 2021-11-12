@@ -17,6 +17,9 @@ class ProtoStream(ABC):
 
         return msg
 
+    def __del__(self):
+        self.kill_stream()
+
     def write_message_to_stream(self, msg: Message):
         message_bytes = _VarintBytes(msg.ByteSize()) + msg.SerializeToString()
         self._write_to_stream(message_bytes)
