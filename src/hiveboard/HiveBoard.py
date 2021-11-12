@@ -1,7 +1,8 @@
 from threading import Thread
 from time import sleep
+from typing import List, Union
 
-from src.hiveboard.proto.message_pb2 import Greeting, Message, InterlocState, UNSUPORTED, STANDBY, ANGLE_CALIB_RECEIVER
+from src.hiveboard.proto.message_pb2 import UserCallTarget, FunctionArgument, FunctionCallRequest, Greeting, Message, InterlocState, UNSUPORTED, STANDBY, ANGLE_CALIB_RECEIVER
 from src.hiveboard.proto.message_pb2 import GetNeighborsListRequest, HiveMindHostApiRequest, Request, GetNeighborRequest
 from src.hiveboard.proto.message_pb2 import GetNeighborsListResponse, HiveMindHostApiResponse, Response, GetNeighborResponse
 from src.hiveboard.proto.proto_stream import ProtoStream
@@ -29,6 +30,7 @@ class HiveBoard:
 
         self.neighbors_list_callback = None
         self.neighbor_position_callback = None
+        self.function_request_call_callback = None
 
         self._id_map = {
             0: 0,
@@ -42,6 +44,9 @@ class HiveBoard:
 
     def set_neighbor_position_callback(self, callback):
         self.neighbor_position_callback = callback
+
+    def set_function_request_call_callback(self, callback):
+        self.function_request_call_callback = callback
 
     def kill_receiver(self):
         self._run = False
@@ -141,6 +146,29 @@ class HiveBoard:
 
         self._proto_stream.write_message_to_stream(msg)
 
+    def send_function_call(self, destination: int, functionName: str, arguments: List[Union[int, float]], target_vm: bool):
+        pb_arguments = []
+        for arg in arguments:
+            pb_arg = FunctionArgument()
+            if type(arg) is int:
+                pb_arg.int_arg = arg
+                pb_arguments.append(pb_arg)
+            elif type(arg) is float:
+                pb_arg.float_arg = arg
+                pb_arguments.append(pb_arg)
+            else:
+                raise Exception("Unsuported argument for function call")
+
+        msg = Message()
+        msg.source_id = self.uuid
+        msg.destination_id = destination
+        msg.request.user_call.source = UserCallTarget.HOST
+        msg.request.user_call.destination = UserCallTarget.BUZZ if target_vm else UserCallTarget.HOST
+        msg.request.user_call.function_call.function_name = functionName
+        msg.request.user_call.function_call.arguments.extend(pb_arguments)
+
+        self._proto_stream.write_message_to_stream(msg)
+
     def send_get_neighbor_position_request(self, destination: int, neighbor_id: id):
         neighbor_position_request = GetNeighborRequest()
         neighbor_position_request.neighbor_id = neighbor_id
@@ -159,9 +187,6 @@ class HiveBoard:
         self._proto_stream.write_message_to_stream(msg)
 
 
-
-
-
     def _rx_msg_handler(self):
         while self._run:
             msg = self._proto_stream.read_message_from_stream()
@@ -175,6 +200,8 @@ class HiveBoard:
                 self._handle_interloc_message(msg.interloc.output)
             elif msg.HasField("response"):
                 self._parse_and_handle_response(msg.response)
+            elif msg.HasField("request"):
+                self._parse_and_handle_request(msg.request)
             else:
                 print(f'Received unhandled message: {msg}')
 
@@ -235,6 +262,13 @@ class HiveBoard:
             elif hivemind_host_api_response.HasField("neighbor") and self.neighbor_position_callback:
                 neighbor = hivemind_host_api_response.neighbor
                 self.neighbor_position_callback(neighbor)
+
+    def _parse_and_handle_request(self, request : Request):
+        if request.HasField("user_call"):
+            usercall_request = request.user_call
+            if usercall_request.HasField("function_call") and self.function_request_call_callback:
+                function_call = usercall_request.function_call
+                self.function_request_call_callback(function_call)
 
 
 

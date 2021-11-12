@@ -2,7 +2,7 @@ import signal
 
 import pandas
 import os
-from time import sleep
+import time
 from datetime import datetime
 
 from src.hiveboard.HiveBoard import HiveBoard
@@ -25,29 +25,32 @@ class Runner:
     def __init__(self, hiveboard):
         self.running = True
         self.hb = hiveboard
+        self.time_start = 0
 
     def signal_handler(self, sig, frame):
         self.running = False
+        
+    def function_request_handler(self, function_call_request):
+        if function_call_request.function_name == "timeStart":
+            self.hb.send_function_call(hb.uuid, "timeLoopBuzz", [2], True)
+            print("start time")
+            self.time_start = time.time_ns()
+        elif function_call_request.function_name == "timeEnd":
+            ellapsed = time.time_ns() - self.time_start
+            print(f"Elapsed time {ellapsed/1e6}")
+
 
     def run(self):
         signal.signal(signal.SIGINT, self.signal_handler)
+        self.hb.set_function_request_call_callback(self.function_request_handler)
 
         self.hb.greet()
-        self.hb.enable_interloc_dumps(True)
 
         while self.running:
-            sleep(1)
+            time.sleep(1)
 
-        print('Stopping recording')
-        self.hb.enable_interloc_dumps(False)
+        print('Stopping')
         self.hb.kill_receiver()
-
-        if not os.path.exists('data'):
-            os.makedirs('data')
-
-        for remote in hb.interloc_data.keys():
-            dataframe = pandas.DataFrame(hb.interloc_data[remote])
-            dataframe.to_csv(f'data/{datetime.now().strftime("%Y%m%d_%H%M%S")}-hb_{remote}.csv')
 
 
 runner = Runner(hb)

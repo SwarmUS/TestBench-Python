@@ -129,7 +129,7 @@ class DummyHiveBoard(ProtoStream):
 
 def main():
     try:
-        dummy = DummyHiveBoard(55551)
+        dummy = DummyHiveBoard(7001)
         dummy.thread.start()
     except KeyboardInterrupt:
         dummy._run = False

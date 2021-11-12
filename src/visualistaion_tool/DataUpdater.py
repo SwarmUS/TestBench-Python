@@ -53,7 +53,7 @@ class DataUpdater(QObject):
                     print(f"Could not open serial port {COM_PORT}")
                     time.sleep(1)
             else:
-                self.tcp_stream = EthernetStream(55551)
+                self.tcp_stream = EthernetStream(7001)
                 print("Waiting for hiveboard connection ...")
                 self.tcp_stream.wait_connection()
                 self.hiveboard = HiveBoard(self.tcp_stream)

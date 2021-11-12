@@ -18,7 +18,7 @@ num_frames = 100
 if not USE_ETHERNET:
     hb_stream = UsbStream('/dev/ttyACM1')
 else:
-    hb_stream = EthernetStream(55551)
+    hb_stream = EthernetStream(7001)
     hb_stream.wait_connection()
 
 testbench = TurningStation('/dev/ttyACM1', 115200)
