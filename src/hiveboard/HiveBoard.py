@@ -103,7 +103,7 @@ class HiveBoard:
         msg.interloc.configure.configureInterlocDumps.enable = enabled
         self._proto_stream.write_message_to_stream(msg)
 
-    def set_angle_parameters(self, params: AngleCalculatorParameters):
+    def set_angle_parameters(self, params: AngleCalculatorParameters, orientation_offset: float):
         msg = Message()
         msg.source_id = self.uuid
         msg.destination_id = self.uuid
@@ -118,6 +118,8 @@ class HiveBoard:
         msg.interloc.configure.configureAngleParameters.pdoaNormalizationFactor = params.m_pdoaNormalizationFactors
         msg.interloc.configure.configureAngleParameters.pdoaSlopes.extend(params.m_pdoaSlopes)
         msg.interloc.configure.configureAngleParameters.pdoaIntercepts.extend(params.m_pdoaIntercepts)
+
+        msg.interloc.configure.configureAngleParameters.boardOrientationOffset = orientation_offset
 
         self._proto_stream.write_message_to_stream(msg)
 
