@@ -7,14 +7,14 @@ class AngleCalculatorParameters:
     m_pairID = None
     # Normalization factors used to stretch TDOA angles between - 90 and +90 degrees.(Applied by
     # dividing by the normalization before applying the asin() on the TDOA)
-    m_tdoaNormalizationFactors = None
+    # m_tdoaNormalizationFactors = None
 
     # Slopes (a in y = ax + b) of the non - reciprocated TDOA functions(calculatedAngle=a * realAngle + b)
-    m_tdoaSlopes = None
+    # m_tdoaSlopes = None
 
     # Intercepts(b in y = ax + b) of the non - reciprocated TDOA functions \
     # (calculatedAngle = a * realAngle+b)
-    m_tdoaIntercepts = None
+    # m_tdoaIntercepts = None
 
     # Normalization factors used to stretch PDOA angles between -90 and +90 degrees. (Applied by
     # dividing by the normalization after applying the asin() on the PDOA)
@@ -30,7 +30,7 @@ class AngleCalculatorParameters:
     m_pdoaIntercepts = None
 
     # Origins (value for angle=-90 degrees) for every PDOA curve. Used to decide which curve to use
-    m_pdoaOrigins = None
+    # m_pdoaOrigins = None
 
     # Lookup table used to know which antenna IDs are used in each pair ID
     # TDOAx = m_antennaPairs[0]-m_antennaPairs[1]
