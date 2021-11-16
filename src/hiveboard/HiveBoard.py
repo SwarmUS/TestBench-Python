@@ -35,7 +35,14 @@ class HiveBoard:
             1: 1,
             5: 2
         }
-        self._decision_matrix = [[0, 0, 1], [1, 0, 1], [0, 0, 0]]
+        # self._decision_matrix = [[0, 0, 1], [1, 0, 1], [0, 0, 0]]
+        self._decision_matrix = [[-1, 0, 1], [1, -1, 1], [0, 0, -1]]
+
+    def set_neighbor_list_callback(self, callback):
+        self.neighbors_list_callback = callback
+
+    def set_neighbor_position_callback(self, callback):
+        self.neighbor_position_callback = callback
 
     def set_neighbor_list_callback(self, callback):
         self.neighbors_list_callback = callback
@@ -102,7 +109,7 @@ class HiveBoard:
         msg.interloc.configure.configureInterlocDumps.enable = enabled
         self._proto_stream.write_message_to_stream(msg)
 
-    def set_angle_parameters(self, params: AngleCalculatorParameters):
+    def set_angle_parameters(self, params: AngleCalculatorParameters, orientation_offset: float):
         msg = Message()
         msg.source_id = self.uuid
         msg.destination_id = self.uuid
@@ -114,14 +121,11 @@ class HiveBoard:
         msg.interloc.configure.configureAngleParameters.antennas.extend(params.m_antennaPairs)
         msg.interloc.configure.configureAngleParameters.slopeDecision.extend(self._decision_matrix[pair_id])
 
-        msg.interloc.configure.configureAngleParameters.tdoaNormalizationFactor = params.m_tdoaNormalizationFactors
-        msg.interloc.configure.configureAngleParameters.tdoaSlopes.extend(params.m_tdoaSlopes)
-        msg.interloc.configure.configureAngleParameters.tdoaIntercepts.extend(params.m_tdoaIntercepts)
-
         msg.interloc.configure.configureAngleParameters.pdoaNormalizationFactor = params.m_pdoaNormalizationFactors
-        msg.interloc.configure.configureAngleParameters.pdoaSlope = params.m_pdoaSlopes
+        msg.interloc.configure.configureAngleParameters.pdoaSlopes.extend(params.m_pdoaSlopes)
         msg.interloc.configure.configureAngleParameters.pdoaIntercepts.extend(params.m_pdoaIntercepts)
-        msg.interloc.configure.configureAngleParameters.pdoaOrigins.extend(params.m_pdoaOrigins)
+
+        msg.interloc.configure.configureAngleParameters.boardOrientationOffset = orientation_offset
 
         self._proto_stream.write_message_to_stream(msg)
 
@@ -157,6 +161,42 @@ class HiveBoard:
         msg.request.CopyFrom(request)
 
         self._proto_stream.write_message_to_stream(msg)
+
+    def send_get_neighbors_request(self, destination: int):
+        neighbors_request = GetNeighborsListRequest()
+
+        hivemind_api_request = HiveMindHostApiRequest()
+        hivemind_api_request.neighbors_list.CopyFrom(neighbors_request)
+
+        request = Request()
+        request.hivemind_host.CopyFrom(hivemind_api_request)
+
+        msg = Message()
+        msg.source_id = self.uuid
+        msg.destination_id = destination
+        msg.request.CopyFrom(request)
+
+        self._proto_stream.write_message_to_stream(msg)
+
+    def send_get_neighbor_position_request(self, destination: int, neighbor_id: id):
+        neighbor_position_request = GetNeighborRequest()
+        neighbor_position_request.neighbor_id = neighbor_id
+
+        hivemind_host_api_request = HiveMindHostApiRequest()
+        hivemind_host_api_request.neighbor.CopyFrom(neighbor_position_request)
+
+        request = Request()
+        request.hivemind_host.CopyFrom(hivemind_host_api_request)
+
+        msg = Message()
+        msg.source_id = self.uuid
+        msg.destination_id = destination
+        msg.request.CopyFrom(request)
+
+        self._proto_stream.write_message_to_stream(msg)
+
+
+
 
 
 
