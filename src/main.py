@@ -12,11 +12,11 @@ from src.turning_station.TurningStation import TurningStation, tickToAngle
 
 # To use ethernet, you must have a static IP of 192.168.1.101 on submask 255.255.255.0
 USE_ETHERNET = True
-distance = "0p024_2m"
+distance = "0p024_2mOfficial"
 if not USE_ETHERNET:
     hb_stream = UsbStream('COM16')
 else:
-    hb_stream = EthernetStream(55551)
+    hb_stream = EthernetStream(7001)
     hb_stream.wait_connection()
 
 testbench = TurningStation('COM15', 115200)
@@ -38,8 +38,6 @@ if not os.path.exists('data'):
 stepSize = 20
 num_frames = 100
 for ticks in tqdm(range(0, 2060, stepSize)):
-    posTick = int(testbench.getPosition())
-
     hb.set_num_angle_frames(num_frames)
     data = hb.read_angle_data()
 
@@ -48,12 +46,12 @@ for ticks in tqdm(range(0, 2060, stepSize)):
         hb.set_num_angle_frames(num_frames - len(data))
         data += hb.read_angle_data()
 
-    for frame in data:
-        frame['Encoder Tick'] = posTick
-        frame['Angle'] = tickToAngle(posTick)
-        accumulated_data.append(frame)
-
     testbench.goToTick(stepSize)
+    posTick = int(testbench.getPosition())
+    for frame in data:
+        frame['Encoder Tick'] = ticks
+        frame['Angle'] = tickToAngle(ticks)
+        accumulated_data.append(frame)
     sleep(0.5)
     testbench.resetPosition()
 

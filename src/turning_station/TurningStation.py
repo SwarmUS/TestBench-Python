@@ -51,6 +51,7 @@ class TurningStation():
         pos =  self.ser.read_until().decode()
 
         while not pos[0:-1].isnumeric():
+            self.ser.flush()
             self.sendMsg("positionis;")
             pos = self.ser.read_until().decode()
 
