@@ -47,7 +47,6 @@ for ticks in tqdm(range(0, 2060, stepSize)):
         data += hb.read_angle_data()
 
     testbench.goToTick(stepSize)
-    posTick = int(testbench.getPosition())
     for frame in data:
         frame['Encoder Tick'] = ticks
         frame['Angle'] = tickToAngle(ticks)
