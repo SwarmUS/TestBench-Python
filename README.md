@@ -16,6 +16,7 @@ To start the tool, start the `main.py` file under `src/visualisation_tool`. By d
 use the com port `/dev/ttyACM0`. To edit this value, edit the `COM_PORT` variable in `DataUpdater.py`.
 
 The visualisation tool will open a window with an orange dot at the center, representing the stationary HiveBoard. The 
-mobile HiveBoards will show as coloured circles and their position will be updated at regular intervals.
+mobile HiveBoards will show as coloured circles and their position will be updated at regular intervals. Specific
+neighbors can be hidden by unchecking the 'visible' check box in the table underneath the graph.
 
 ![](img/visualisation_tool.png)
