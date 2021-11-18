@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QApplication, QLabel
 def main():
     app = QApplication([])
     main_window = MainWindow()
-    main_window.show()
+    main_window.showMaximized()
     app.exec_()
 
 
