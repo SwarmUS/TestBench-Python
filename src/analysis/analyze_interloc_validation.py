@@ -15,16 +15,19 @@ def analyze_validation(filename):
 
         unique_angles = np.unique(expected_angles)
         mean_calculated_angles = np.zeros(unique_angles.shape)
+        std_calculated_angles = np.zeros(unique_angles.shape)
 
         for i in range(len(mean_calculated_angles)):
             data_points = list(filter(lambda d: (float(d['angle']) == unique_angles[i]), valid_angle_data))
             mean_calculated_angles[i] = np.mean([float(v['Azimuth']) for v in data_points])
+            std_calculated_angles[i] = np.std([float(v['Azimuth']) for v in data_points])
 
         plt.figure()
         plt.title("Sortie du HiveBoard")
         plt.xlabel("Angle réel (°)")
         plt.ylabel("Angle mesuré (°)")
         plt.plot(expected_angles, calculated_angles, '.')
+        plt.plot(unique_angles, mean_calculated_angles, '-')
 
         plt.figure()
         plt.title("Précision de l'angle mesuré")
@@ -32,7 +35,13 @@ def analyze_validation(filename):
         plt.ylabel("Erreur absolue (°)")
         plt.plot(unique_angles, np.abs(unique_angles - mean_calculated_angles), '.')
 
+        plt.figure()
+        plt.title("Écart-type de l'angle calculé")
+        plt.xlabel("Angle Réel (°)")
+        plt.ylabel("Écart-type (°)")
+        plt.plot(unique_angles, std_calculated_angles, '.')
+
         plt.show()
 
 
-analyze_validation("../data/validation_2021-11-17 15:34:02.556853.20211117_153402.csv")
+analyze_validation("../data/validation_hb6.csv")
