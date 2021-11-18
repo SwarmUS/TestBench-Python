@@ -13,6 +13,7 @@ class Graph2D(QtWidgets.QWidget):
         self.layout = QtWidgets.QGridLayout()
         self.setLayout(self.layout)
         self.scatters = {}
+        self.hidden_neighbors = []
 
         self.create_2d_plot()
         self.create_grid()
@@ -45,17 +46,26 @@ class Graph2D(QtWidgets.QWidget):
 
     @pyqtSlot(int, float, float)
     def update_point(self, neighbor_id: int, x: float, y: float):
-        if neighbor_id not in self.scatters.keys():
+        if neighbor_id not in self.scatters.keys() and neighbor_id not in self.hidden_neighbors:
             self.scatters.update({neighbor_id: {"scatter": pg.ScatterPlotItem(name=f"agent {neighbor_id}",
                                                                               brush=pg.intColor(neighbor_id * COLOR_OFFSET, 100)),
                                                 "spot": {}}})
             self.graphWidget.addItem(self.scatters[neighbor_id]["scatter"])
+        if neighbor_id not in self.hidden_neighbors:
+            self.scatters[neighbor_id]["spot"] = {'pos': [x, y],
+                                                  'pen': {'color': 'w', 'width': 1},
+                                                  # 100 is the number int values for the color spectrum,
+                                                  # COLOR_OFFSET is the offset to apply to have 6 different values for points
+                                                  'brush': pg.intColor(neighbor_id * COLOR_OFFSET, 100),
+                                                  'size': 20}
+            self.scatters[neighbor_id]["scatter"].setData(spots=[self.scatters[neighbor_id]["spot"]],
+                                                          name=f"Agent {neighbor_id}")
 
-        self.scatters[neighbor_id]["spot"] = {'pos': [x, y],
-                                              'pen': {'color': 'w', 'width': 1},
-                                              # 100 is the number int values for the color spectrum,
-                                              # COLOR_OFFSET is the offset to apply to have 6 different values for points
-                                              'brush': pg.intColor(neighbor_id * COLOR_OFFSET, 100),
-                                              'size': 20}
-        self.scatters[neighbor_id]["scatter"].setData(spots=[self.scatters[neighbor_id]["spot"]],
-                                                      name=f"Agent {neighbor_id}")
+    @pyqtSlot(list)
+    def hide_neighbors(self, hidden_neighbors: list):
+        self.hidden_neighbors = hidden_neighbors
+        for neighbor_id in self.hidden_neighbors:
+            if neighbor_id in self.scatters.keys():
+                element = self.scatters.pop(neighbor_id)
+                self.graphWidget.removeItem(element["scatter"])
+

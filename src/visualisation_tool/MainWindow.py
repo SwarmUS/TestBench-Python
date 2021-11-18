@@ -21,10 +21,7 @@ class MainWindow(QMainWindow):
 
         # Qt shenaninigans
         self.setWindowTitle("SwarmUS Interlocalisation Visualisation Tool")
-        self.main_layout = QHBoxLayout()
-        self.container = QWidget()
-        self.container.setLayout(self.main_layout)
-        self.main_layout.setSizeConstraint(QLayout.SetMinimumSize)
+        self.container = QSplitter(Qt.Vertical)
         self.setCentralWidget(self.container)
 
         # Create UI elements here
@@ -86,11 +83,11 @@ class MainWindow(QMainWindow):
 
     def create_2d_graph_area(self):
         self.graphWidget = Graph2D(self)
-        self.main_layout.addWidget(self.graphWidget)
+        self.container.addWidget(self.graphWidget)
 
     def create_neighbor_table(self):
-        self.neighbor_table = NeighborCoordinateTable(0, 4)
-        self.main_layout.addWidget(self.neighbor_table)
+        self.neighbor_table = NeighborCoordinateTable(0, 5)
+        self.container.addWidget(self.neighbor_table)
         self.refresh_neighbor.connect(self.neighbor_table.clear_table)
 
     def start_data_acquisition(self):

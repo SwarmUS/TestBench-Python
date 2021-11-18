@@ -3,7 +3,7 @@ import time
 
 from Graph2D import Graph2D
 from NeighborCoordinateTable import NeighborCoordinateTable
-from PyQt5.QtCore import QObject, QThread, pyqtSignal
+from PyQt5.QtCore import QObject, QThread, pyqtSignal, pyqtSlot
 import numpy as np
 import sys
 
@@ -34,6 +34,7 @@ class DataUpdater(QObject):
         self.target_agent_id = 0
 
         self.neighbor_list = []
+        self.neighbor_table.hide_neighbors.connect(self.graph.hide_neighbors)
 
         self.start_connection_thread()
         self.start_greeting_thread()
@@ -79,11 +80,11 @@ class DataUpdater(QObject):
         print(f"New neighbor list is {self.neighbor_list}")
 
     def handle_neigbor_update(self, neighbor):
+        neighbor_id = neighbor.neighbor_id
+        self.new_polar_point.emit(neighbor_id, neighbor.position.distance, neighbor.position.azimuth)
         y = neighbor.position.distance * np.cos(neighbor.position.azimuth / 180 * np.pi)
         x = neighbor.position.distance * np.sin(neighbor.position.azimuth / 180 * np.pi)
-        neighbor_id = neighbor.neighbor_id
         self.new_cartesian_point.emit(neighbor_id, x, y)
-        self.new_polar_point.emit(neighbor_id, neighbor.position.distance, neighbor.position.azimuth)
 
     def request_neighbors_update(self):
         while True:
