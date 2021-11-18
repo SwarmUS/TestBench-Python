@@ -20,7 +20,8 @@ Requires the [TestBench-Arduino](https://swarmus.github.io/SwarmUS-doc/) code to
 This script enables the user to extract the raw DW1000 data from the HiveBoard/BeeBoards assembly. The test-bench will turn by a chosen stepping angle and acquire the desired amount of raw data per step.
 #### Hardware setup
 - Place a BeeBoards assembly in the middle of the test-bench. The 0deg axis of the assembly needs to point in a parallel fashion to the mounted laser pointer. 
-- The BeeBoards have to be connected to a HiveBoard mounted to the test-bench using the same cable and ports as labeled on the assembly. Connect power and communication interface to the HiveBoard.
+- The BeeBoards have to be connected to a HiveBoard mounted to the test-bench using the same cable and ports as labeled on the assembly. If the cables and assembly are note indicated be sure to note wich BeeBoards are used, plugged with wich cables and in wich channel on wich HiveBoard. The calibration will only be valid for this configuration and has to be completly re-performed if any of this component is changed or plugged differently.
+-Connect power and communication interface to the HiveBoard.
 - Connect a usb cable to the Arduino.
 - Connect power to the drive submodule (red = 12&nbsp;V, black = ground)
 - To align the receiver with the emmiter, use the laser pointer. Each laser should point to the alignment target of the other laser assembly. This position ensures a 0 degree relative orientation between the two radio setup. 
