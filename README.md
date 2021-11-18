@@ -62,11 +62,11 @@ pair 5 = antenna 2 - antenna 1<br />
 `EXPORT_PDOA` : True will prompt the second set of plots (slopes extraction) and save the calibration result in a **pickle** format
 #### Behavioral descrition and user interaction
 Upon runnning the script, the first plot to appear will ask the user to select points from wich to offset the whole dataset. The first plot represents a sin, the points selected should then be the very bottom of a sin *parabola* section. Also, to obtain a better estimation of the offset needed, it is possible to select the very bottom of the *parabola*, and a top of this *parabola* that has wrapped over. Many points can be selected, the mean of the *y axis* will be used as the offset. If the sin is not wrapping, no points need to be selected, as no offset needs to be applied. This process has to be repeted for the number of `usedPairs` selected. Here is an exemple of the process.<br />
-![Exemple of multiple point selection for the offset]( file:///img/ex_offset.png)<br />
+![](img/ex_offset.png)<br />
 A plot of the result will then appear. If all curves are not wrapping, the first step is succesful. Otherwise, the script must be re-run and better points must be selected until all curves do not wrap. <br />
 
 The second set of plots is the extraction of the slopes caracteristics. This set will appear only if the `EXPORT_PDOA` has beed set to `True`. A minimum of two lines, and a maximum of three, must be drawn in order to represent the slopes of the data. To draw a line, clic on two points, preferably the farthest appart. Draw at least one line for the rising part and one line for the falling part. This process has to be repeted for the number of `usedPairs` selected. Here is an exemple of the process.<br />
-![Exemple of multiple lines representation]( file:///img/ex_lines.png)<br />
+![](img/ex_lines.png)<br />
 The saved data will appear in the `dataFolderPath/angleParameters`. Each antenna pair has its own pickle file. These files will also be refered as the **calibration**.
 A validation of these files can be done using the `testRead` function from the `Exporter` class.<br />
 
