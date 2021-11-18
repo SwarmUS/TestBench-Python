@@ -44,6 +44,12 @@ class HiveBoard:
     def set_neighbor_position_callback(self, callback):
         self.neighbor_position_callback = callback
 
+    def set_neighbor_list_callback(self, callback):
+        self.neighbors_list_callback = callback
+
+    def set_neighbor_position_callback(self, callback):
+        self.neighbor_position_callback = callback
+
     def kill_receiver(self):
         self._run = False
         self._proto_stream.kill_stream()
@@ -155,6 +161,42 @@ class HiveBoard:
         msg.request.CopyFrom(request)
 
         self._proto_stream.write_message_to_stream(msg)
+
+    def send_get_neighbors_request(self, destination: int):
+        neighbors_request = GetNeighborsListRequest()
+
+        hivemind_api_request = HiveMindHostApiRequest()
+        hivemind_api_request.neighbors_list.CopyFrom(neighbors_request)
+
+        request = Request()
+        request.hivemind_host.CopyFrom(hivemind_api_request)
+
+        msg = Message()
+        msg.source_id = self.uuid
+        msg.destination_id = destination
+        msg.request.CopyFrom(request)
+
+        self._proto_stream.write_message_to_stream(msg)
+
+    def send_get_neighbor_position_request(self, destination: int, neighbor_id: id):
+        neighbor_position_request = GetNeighborRequest()
+        neighbor_position_request.neighbor_id = neighbor_id
+
+        hivemind_host_api_request = HiveMindHostApiRequest()
+        hivemind_host_api_request.neighbor.CopyFrom(neighbor_position_request)
+
+        request = Request()
+        request.hivemind_host.CopyFrom(hivemind_host_api_request)
+
+        msg = Message()
+        msg.source_id = self.uuid
+        msg.destination_id = destination
+        msg.request.CopyFrom(request)
+
+        self._proto_stream.write_message_to_stream(msg)
+
+
+
 
 
 

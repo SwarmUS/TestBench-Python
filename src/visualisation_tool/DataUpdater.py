@@ -2,7 +2,8 @@ import threading
 import time
 
 from Graph2D import Graph2D
-from PyQt5.QtCore import QObject, QThread, pyqtSignal
+from NeighborCoordinateTable import NeighborCoordinateTable
+from PyQt5.QtCore import QObject, QThread, pyqtSignal, pyqtSlot
 import numpy as np
 import sys
 
@@ -17,19 +18,23 @@ COM_PORT = "/dev/ttyACM0"
 
 
 class DataUpdater(QObject):
-    new_point = pyqtSignal(int, float, float)
+    new_cartesian_point = pyqtSignal(int, float, float)
+    new_polar_point = pyqtSignal(int, float, float)
     received_greeting = pyqtSignal(int)
 
-    def __init__(self, graph: Graph2D):
+    def __init__(self, graph: Graph2D, table: NeighborCoordinateTable):
         super().__init__()
 
         self.graph = graph
-        self.new_point.connect(self.graph.update_point)
+        self.neighbor_table = table
+        self.new_cartesian_point.connect(self.graph.update_point)
+        self.new_polar_point.connect(self.neighbor_table.update_neighbor)
         self.hiveboard = None
         self.hiveboard_connnected = False
         self.target_agent_id = 0
 
         self.neighbor_list = []
+        self.neighbor_table.hide_neighbors.connect(self.graph.hide_neighbors)
 
         self.start_connection_thread()
         self.start_greeting_thread()
@@ -75,11 +80,11 @@ class DataUpdater(QObject):
         print(f"New neighbor list is {self.neighbor_list}")
 
     def handle_neigbor_update(self, neighbor):
-        y = -neighbor.position.distance * np.cos(neighbor.position.azimuth / 180 * np.pi)
-        x = neighbor.position.distance * np.sin(neighbor.position.azimuth / 180 * np.pi)
         neighbor_id = neighbor.neighbor_id
-        self.new_point.emit(neighbor_id, x, y)
-        print(f"Agent {neighbor_id} now at ({x},{y})")
+        self.new_polar_point.emit(neighbor_id, neighbor.position.distance, neighbor.position.azimuth)
+        y = neighbor.position.distance * np.cos(neighbor.position.azimuth / 180 * np.pi)
+        x = neighbor.position.distance * np.sin(neighbor.position.azimuth / 180 * np.pi)
+        self.new_cartesian_point.emit(neighbor_id, x, y)
 
     def request_neighbors_update(self):
         while True:
@@ -91,4 +96,4 @@ class DataUpdater(QObject):
                 for neighbor_id in self.neighbor_list:
                     self.hiveboard.send_get_neighbor_position_request(destination=self.target_agent_id,
                                                                       neighbor_id=neighbor_id)
-            time.sleep(0.1)
+            time.sleep(0.2)
