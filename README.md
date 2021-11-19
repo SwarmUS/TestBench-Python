@@ -14,7 +14,9 @@ Prerequisites:
 - [Pip](https://pypi.org/project/pip/)
 
 Each script has its own requirements.txt wich permits the installation of the required packages
-
+## Normal Order of operation
+Follow this flow chart in order to find which script to run depending on your need:
+![](img/calibration_flow)<br />
 ## ExtractRawData
 Requires the [TestBench-Arduino](https://swarmus.github.io/SwarmUS-doc/) code to be installed on the test-bench's Arduino in order to be interfaced.
 This script enables the user to extract the raw DW1000 data from the HiveBoard/BeeBoards assembly. The test-bench will turn by a chosen stepping angle and acquire the desired amount of raw data per step.
@@ -30,7 +32,7 @@ This script enables the user to extract the raw DW1000 data from the HiveBoard/B
 The script can be run from the following file (**insert file path**)
 
 #### Adjustable parameters
-`USE_ETHERNET` : If true, the commnunication with the Hiveboard will be done from the Ethernet port. If false, the UART interface will be used, and the following line must be edited to match the port on wich the Hiveboard is connected.
+`USE_ETHERNET` : If true, the communication with the Hiveboard will be done from the Ethernet port. If false, the UART interface will be used, and the following line must be edited to match the port on wich the Hiveboard is connected.
 ```python
 hb_stream = UsbStream('COM16')
 ```
@@ -41,7 +43,7 @@ testbench = TurningStation('COM15', 115200)
 `name` : suffix given to the produced CSV with the raw data.<br />
 `stepSize` : number of encoder ticks between each acquisition position.<br />
 `num_frames` : number of raw data frames to be acquisitioned at each position.<br />
-`destination` : ending position of the acquisition. The used encoder has 2048 tick per turn. 2050 should represent a single complete turn.<br />
+`destination` : ending position of the acquisition. The used encoder has 2048 tick per turn, 2050 should represent a single complete turn.<br />
 The data extracted will be saved upon completion of the acquisition once the destination has been reached. The saved data is found in the `/src/data` folder. Each CSV is timestamped and named using the `name` variable
 
 Once these parameters have been adjusted, the file can be run. The *TurningStation* should turn the amount entered in `step` and than stop for 3-5 seconds for the acquisition period before starting to turn again, repeting this cycle until `destination` has been reached
@@ -79,14 +81,14 @@ The script can be run from the following file (**insert file path**)
 #### Adjustable parameters
 `HIVEBOARD_ID` : the identification number of the Hiveboard. Can be found either in the flash memory or written on the RJ45 connector. <br />
 `MOUNT_ORIENTATION_OFFSET` : the rotation offest, in degrees, applied to the Beeboard assembly between the Test-bench setup at wich the calibration was made, and the orientation on the robot or final installation.<br />
-`USE_ETHERNET` : If true, the commnunication with the Hiveboard will be done from the Ethernet port. If false, the UART interface will be used, and the following line must be adjusted to match the port on wich the Hiveboard is connected.
+`USE_ETHERNET` : If true, the communication with the Hiveboard will be done from the Ethernet port. If false, the UART interface will be used, and the following line must be adjusted to match the port on wich the Hiveboard is connected.
 ```python
 hb_stream = UsbStream('COM16')
 ```
 #### Behavioral descrition
 When the script is ran, the parameters in the calibration folder will be sent to the connected Hiveboard and saved in the flash memory. Thus, there is no need to re-send the parameters on every boot cycle. The calibration should be performed occasionally to ensure the system reliability.
 
-Communication with the HiveBoard is done using the **propolis/pheromones (je sais jamais)** submodule. If commnunication problem occur, ensure that the version used by the script is the same as on the HiveBoard.
+Communication with the HiveBoard is done using the pheromones submodule. If communication problem occur, ensure that the version used by the script is the same as on the HiveBoard.
 ## Visualisation
 When a calibration has been completly transfered to the correspondant Hiveboard, this tool can be used to manually and visually confirm the effectivness of the calibration. Using a emmiter, the user can move around the calibrated Hiveboard and see a marker representing the emmiter move around.
 
@@ -107,7 +109,7 @@ neighbors can be hidden by unchecking the 'visible' check box in the table under
 
 ![](img/visualisation_tool.png)
 
-Communication with the HiveBoard is done using the **propolis/pheromones (je sais jamais)** submodule. If commnunication problem occur, ensure that the version used by the script is the same as on the HiveBoard.
+Communication with the HiveBoard is done using the pheromones submodule. If communication problem occur, ensure that the version used by the script is the same as on the HiveBoard.
 ## Validate
 This is a method to test the whole angles system of the interlocalisation. Using the exact same hardware setup as the calibration it is possible to extract the angle value result from the whole acquisition, linearisation and certitude algorithm.
 #### Runnning the script
@@ -115,4 +117,4 @@ The script can be run from the following file (**insert file path**)
 #### Adjustable parameters
 #### Behavioral descrition
 #### Results
-Communication with the HiveBoard is done using the **propolis/pheromones (je sais jamais)** submodule. If commnunication problem occur, ensure that the version used by the script is the same as on the HiveBoard.
+Communication with the HiveBoard is done using the pheromones submodule. If communication problem occur, ensure that the version used by the script is the same as on the HiveBoard.
