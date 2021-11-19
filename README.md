@@ -3,8 +3,8 @@ This repo is the accumulation of many scripts needed in order to calibrate and v
 The python scripts are :
 - [ExtractRawData](#extractRawData)
 - [Parser](#parser)
-- [Send_parameters](#send_parameters)
-- [Visualisation](#visualisation)
+- [Send_angle_params](#send_angle_params)
+- [Visualization](#visualization)
 - [Validate](#validate)
 
 ## Installation
@@ -28,7 +28,7 @@ This script enables the user to extract the raw DW1000 data from the HiveBoard/B
 - To align the receiver with the emmiter, use the laser pointer. Each laser should point to the alignment target of the other laser assembly. This position ensures a 0 degree relative orientation between the two radio setup. 
 - The laser mount should be calibrated periodicly to ensure its position and accuracy,
 #### Runnning the script
-The script can be run from the following file (**insert file path**)
+The script can be run from `/src/extractRawData`
 Requires the [TestBench-Arduino](https://swarmus.github.io/SwarmUS-doc/) code to be installed on the test-bench's Arduino in order to be interfaced.
 
 #### Adjustable parameters
@@ -51,9 +51,9 @@ Once these parameters have been adjusted, the file can be run. The *TurningStati
 #### Note
 Communication with the HiveBoard is done using the pheromones submodule. If communication problem occur, ensure that the version used by the script is the same as on the HiveBoard.
 ## Parser
-Parses and presents the PDOA values from the previously acquired raw data (from control). The user will be prompted 2 clickable interfaces to firstly offset the data to a common reference and secondly to extract the slopes of each antenna pair.
+Parses and presents the PDOA values from the previously acquired raw data (from [ExtractRawData](#pxtractRawData)). The user will be prompted 2 clickable interfaces to firstly offset the data to a common reference and secondly to extract the slopes of each antenna pair.
 #### Runnning the script
-The script can be run from the following file (**insert file path**)
+The script can be run from `src/parser`
 #### Adjustable parameters
 `dataFolderPath` : folder path where the extracted raw data CSV produced by [ExtractRawData](#pxtractRawData) has been save.<br />
 `dataName` : name of the file to parse the data from.<br />
@@ -74,10 +74,10 @@ The second set of plots is the extraction of the slopes caracteristics. This set
 The saved data will appear in the `dataFolderPath/angleParameters`. Each antenna pair has its own pickle file. These files will also be refered as the **calibration**.
 A validation of these files can be done using the `testRead` function from the `Exporter` class.<br />
 
-## Send_parameters
+## Send_angle_params
 Communicates to the Hiveboard the slope and caracteristics of the antenna pairs. Uses the pickle files created by [Parser](#parser). These files need to be placed in the calibration folder using the `hb_{HIVEBOARD_ID}` notation.<br />
 #### Runnning the script
-The script can be run from the following file (**insert file path**)
+The script can be run from `/src/send_angle_params`
 #### Adjustable parameters
 `HIVEBOARD_ID` : the identification number of the Hiveboard. Can be found either in the flash memory or written on the RJ45 connector. <br />
 `MOUNT_ORIENTATION_OFFSET` : the rotation offest, in degrees, applied to the Beeboard assembly between the Test-bench setup at which the calibration was made, and the orientation on the robot or final installation.<br />
@@ -90,7 +90,7 @@ When the script is ran, the parameters in the calibration folder will be sent to
 
 #### Note
 Communication with the HiveBoard is done using the pheromones submodule. If communication problem occur, ensure that the version used by the script is the same as on the HiveBoard.
-## Visualisation
+## Visualization
 When a calibration has been completly transfered to the correspondant Hiveboard, this tool can be used to manually and visually confirm the effectiveness of the calibration. Using a emmiter, the user can move around the calibrated Hiveboard/BeeBoards assembly and see a marker representing the emmiter move around.
 
 To use the tool, you will need one stationary HiveBoard with its BeeBoards and at least one mobile
@@ -101,10 +101,10 @@ computer for the serial connection.
 
 Next, start the mobile HiveBoard/BeeBoards assembly.
 
-To start the tool, start the `main.py` file under `src/visualisation_tool`. By default, the visualisation tool will
+To start the tool, start `src/visualisation_tool`. By default, the visualization tool will
 use the com port `/dev/ttyACM0`. To edit this value, edit the `COM_PORT` variable in `DataUpdater.py`.
 
-The visualisation tool will open a window with an orange dot at the center, representing the stationary HiveBoard. The 
+The visualization tool will open a window with an orange dot at the center, representing the stationary HiveBoard. The 
 mobile HiveBoard assemblies will show as coloured circles and their position will be updated at regular intervals. Specific
 neighbors can be hidden by unchecking the 'visible' check box in the table underneath the graph.
 
@@ -115,7 +115,7 @@ Communication with the HiveBoard is done using the pheromones submodule. If comm
 ## Validate
 This is a method to test the whole angles system of the interlocalisation. Using the exact same hardware setup as the calibration it is possible to extract the angle value result from the whole acquisition, linearisation and certitude algorithm. Using the test-bench assembly will automate this procedure.
 #### Runnning the script
-The script can be run from the following file (**insert file path**)<br />
+The script can be run from `src/validate_interloc`<br />
 Requires the [TestBench-Arduino](https://swarmus.github.io/SwarmUS-doc/) code to be installed on the test-bench's Arduino in order to be interfaced.
 #### Hardware setup
 Refer to the [ExtractRawData](#extractRawData) hardware setup section for the protocol to ensure precise data acquisition.
@@ -141,7 +141,7 @@ Similarly to [ExtractRawData](#extractRawData), the *TurningStation* will turn b
  The saved data is found in the `/src/data` folder. Each CSV is timestamped and named using the "validation_" prefix. For a visual analysis of the data, 3 plots have already been created. Running `src/analysis/analyze_interloc_validation` will produce:
  - A representation of the acquired angles for each position.
  - The error between the calculated angle and the actual orientation of the emmiter.
- - The standard deviation of the angles calculated at each position.
+ - The standard deviation of the angles calculated at each position.<br />
  To select which file to analyze, edit :
 ```python
 analyze_validation("../data/validation_hb6.csv")
