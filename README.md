@@ -14,7 +14,7 @@ Prerequisites:
 - [Pip](https://pypi.org/project/pip/)
 
 Each script has its own requirements.txt which permits the installation of the required packages
-## Normal Order of operation
+## Normal order of operation
 Follow this flow chart in order to find which script to run depending on your need:
 ![](img/calibration_flow.png)<br />
 ## ExtractRawData
@@ -28,7 +28,7 @@ This script enables the user to extract the raw DW1000 data from the HiveBoard/B
 - To align the receiver with the emmiter, use the laser pointer. Each laser should point to the alignment target of the other laser assembly. This position ensures a 0 degree relative orientation between the two radio setup. 
 - The laser mount should be calibrated periodicly to ensure its position and accuracy,
 #### Runnning the script
-The script can be run from `/src/extractRawData`
+The script can be run from `/src/extractRawData`.<br />
 Requires the [TestBench-Arduino](https://swarmus.github.io/SwarmUS-doc/) code to be installed on the test-bench's Arduino in order to be interfaced.
 
 #### Adjustable parameters
@@ -53,7 +53,7 @@ Communication with the HiveBoard is done using the pheromones submodule. If comm
 ## Parser
 Parses and presents the PDOA values from the previously acquired raw data (from [ExtractRawData](#pxtractRawData)). The user will be prompted 2 clickable interfaces to firstly offset the data to a common reference and secondly to extract the slopes of each antenna pair.
 #### Runnning the script
-The script can be run from `src/parser`
+The script can be run from `src/parser`.
 #### Adjustable parameters
 `dataFolderPath` : folder path where the extracted raw data CSV produced by [ExtractRawData](#pxtractRawData) has been save.<br />
 `dataName` : name of the file to parse the data from.<br />
@@ -77,7 +77,7 @@ A validation of these files can be done using the `testRead` function from the `
 ## Send_angle_params
 Communicates to the Hiveboard the slope and caracteristics of the antenna pairs. Uses the pickle files created by [Parser](#parser). These files need to be placed in the calibration folder using the `hb_{HIVEBOARD_ID}` notation.<br />
 #### Runnning the script
-The script can be run from `/src/send_angle_params`
+The script can be run from `/src/send_angle_params`.
 #### Adjustable parameters
 `HIVEBOARD_ID` : the identification number of the Hiveboard. Can be found either in the flash memory or written on the RJ45 connector. <br />
 `MOUNT_ORIENTATION_OFFSET` : the rotation offest, in degrees, applied to the Beeboard assembly between the Test-bench setup at which the calibration was made, and the orientation on the robot or final installation.<br />
@@ -115,7 +115,7 @@ Communication with the HiveBoard is done using the pheromones submodule. If comm
 ## Validate
 This is a method to test the whole angles system of the interlocalisation. Using the exact same hardware setup as the calibration it is possible to extract the angle value result from the whole acquisition, linearisation and certitude algorithm. Using the test-bench assembly will automate this procedure.
 #### Runnning the script
-The script can be run from `src/validate_interloc`<br />
+The script can be run from `src/validate_interloc`.<br />
 Requires the [TestBench-Arduino](https://swarmus.github.io/SwarmUS-doc/) code to be installed on the test-bench's Arduino in order to be interfaced.
 #### Hardware setup
 Refer to the [ExtractRawData](#extractRawData) hardware setup section for the protocol to ensure precise data acquisition.
