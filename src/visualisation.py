@@ -1,4 +1,4 @@
-from MainWindow import MainWindow
+from src.visualisation_tool.MainWindow import MainWindow
 from PyQt5.QtWidgets import QApplication, QLabel
 
 
