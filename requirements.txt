@@ -7,3 +7,4 @@ pyqtgraph == 0.12.3
 PyQt5-stubs == 5.15.2.0
 matplotlib == 3.5.0
 numpy
+scipy
