@@ -16,7 +16,7 @@ Prerequisites:
 Each script has its own requirements.txt wich permits the installation of the required packages
 ## Normal Order of operation
 Follow this flow chart in order to find which script to run depending on your need:
-![](img/calibration_flow)<br />
+![](img/calibration_flow.png)<br />
 ## ExtractRawData
 Requires the [TestBench-Arduino](https://swarmus.github.io/SwarmUS-doc/) code to be installed on the test-bench's Arduino in order to be interfaced.
 This script enables the user to extract the raw DW1000 data from the HiveBoard/BeeBoards assembly. The test-bench will turn by a chosen stepping angle and acquire the desired amount of raw data per step.
