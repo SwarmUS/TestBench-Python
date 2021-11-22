@@ -9,7 +9,7 @@ import src.parser.AngleCalculatorParameters as param
 
 EXPORT_PDOA = True
 
-dataFolderPath = "C:/Users/huber/USherbrooke/SwarmUs - General/Interlocalisation/Angles/HiveBoard"
+dataFolderPath = "../src/data"
 if not os.path.exists(dataFolderPath+"/"+"figures"):
     os.makedirs(dataFolderPath+"/"+"figures")
 

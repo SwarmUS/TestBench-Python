@@ -25,7 +25,6 @@ def PDOA(d,columnsSFD,columnsCIR,angles,offset=None):
 
 
     PDOA = {}
-    scaleFactor = {}
     i = 0
     for col1,_ in enumerate(columnsSFD):
         for col2,_ in enumerate(columnsSFD):
@@ -44,7 +43,6 @@ def PDOA(d,columnsSFD,columnsCIR,angles,offset=None):
                     else:
                         scaleFactor = 1
                         theta = np.mod((part2 + offset[name[i]]), 2 * np.pi) - np.pi
-                        # PDOA[name[i]][a] =theta *90/np.pi
                         PDOA[name[i]][a] = np.arcsin(theta/np.pi) * 180/np.pi * scaleFactor
                 i = i+1
     return PDOA

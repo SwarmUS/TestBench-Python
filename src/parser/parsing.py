@@ -11,9 +11,6 @@ def bundle(df):
 
 def remAnormalRx(df):
     cdf = df
-    # if not the same message on the 3
-
-    # if the TS is anormal
     rxTimestampsCol = df.columns.values[[2, 6, 10]]
     val0 = df[rxTimestampsCol[0]]
     val1 = df[rxTimestampsCol[1]]
@@ -24,11 +21,6 @@ def remAnormalRx(df):
         if val0[i]-val1[i] not in range(-tdoaErrVal,tdoaErrVal) or val0[i]-val2[i] not in range(-tdoaErrVal,tdoaErrVal) or val1[i]-val2[i] not in range(-tdoaErrVal,tdoaErrVal):
             cdf = cdf.drop(i-numDrop)
     return cdf
-
-
-# should remove the clock wrapping
-# def remClockWrap(dic):
-
 
 def flatten (df,columns,x=None):
     flat_dic = {}

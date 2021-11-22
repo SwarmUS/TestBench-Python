@@ -21,7 +21,7 @@ Follow this flow chart in order to find which script to run depending on your ne
 This script enables the user to extract the raw DW1000 data from the HiveBoard/BeeBoards assembly. The test-bench will turn by a chosen stepping angle and acquire the desired amount of raw data per step.
 #### Hardware setup
 - Place a BeeBoards assembly in the middle of the test-bench. The 0deg axis of the assembly needs to point in a parallel fashion to the mounted laser pointer. 
-- The BeeBoards have to be connected to a HiveBoard mounted to the test-bench using the same cable and ports as labeled on the assembly. If the cables and assembly are not indicated be sure to note which BeeBoards are used, plugged with which cables and in which channel on which HiveBoard. The calibration will only be valid for this configuration and has to be completly re-performed if any of this component is changed or plugged differently.
+- The BeeBoards have to be connected to a HiveBoard mounted to the test-bench using the same cable and ports as labeled on the assembly. If the cables and assembly are not indicated be sure to note which BeeBoards are used, plugged with which cables and in which channel on which HiveBoard. **The calibration will only be valid for this configuration and has to be completly re-performed if any of this component is changed or plugged differently.**
 - Connect power and communication interface to the HiveBoard.
 - Connect a usb cable to the Arduino.
 - Connect power to the drive submodule (red = 12&nbsp;V, white = ground)
@@ -49,13 +49,13 @@ The data extracted will be saved upon completion of the acquisition once the des
 Once these parameters have been adjusted, the file can be run. The *TurningStation* should turn the amount entered in `step` and then stop for 3-5 seconds for the acquisition period before starting to turn again, repeting this cycle until `destination` has been reached. A complete turn takes usually around 15 minutes.
 
 #### Note
-Communication with the HiveBoard is done using the pheromones submodule. If communication problem occur, ensure that the version used by the script is the same as on the HiveBoard.
+Communication with the HiveBoard is done using the [Pheromones submodule](https://github.com/SwarmUS/Pheromones). If communication problems occur, ensure that the version used by the script is the same as on the HiveBoard.
 ## Parser
 Parses and presents the PDOA values from the previously acquired raw data (from [ExtractRawData](#pxtractRawData)). The user will be prompted 2 clickable interfaces to firstly offset the data to a common reference and secondly to extract the slopes of each antenna pair.
 #### Runnning the script
 The script can be run from `src/parser`.
 #### Adjustable parameters
-`dataFolderPath` : folder path where the extracted raw data CSV produced by [ExtractRawData](#pxtractRawData) has been save.<br />
+`dataFolderPath` : folder path where the extracted raw data CSV produced by [ExtractRawData](#pxtractRawData) has been saved.<br />
 `dataName` : name of the file to parse the data from.<br />
 `usedPairs` : the antenna pairs to be used. Encoded as follow :<br />
 <pre><code>	pair 0 = antenna 0 - antenna 1<br />
@@ -86,10 +86,10 @@ The script can be run from `/src/send_angle_params`.
 hb_stream = UsbStream('COM16')
 ```
 #### Behavioral description
-When the script is ran, the parameters in the calibration folder will be sent to the connected Hiveboard and saved in the flash memory. Thus, there is no need to re-send the parameters on every boot cycle. The calibration should be performed occasionally to ensure the system reliability.
+When the script is ran, the parameters in the calibration folder will be sent to the connected Hiveboard and saved in the flash memory. Thus, there is no need to re-send the parameters on every boot cycle. **The calibration should be performed occasionally to ensure the system reliability.**
 
 #### Note
-Communication with the HiveBoard is done using the pheromones submodule. If communication problem occur, ensure that the version used by the script is the same as on the HiveBoard.
+Communication with the HiveBoard is done using the [Pheromones submodule](https://github.com/SwarmUS/Pheromones). If communication problems occur, ensure that the version used by the script is the same as on the HiveBoard.
 ## Visualization
 When a calibration has been completly transfered to the correspondant Hiveboard, this tool can be used to manually and visually confirm the effectiveness of the calibration. Using a emmiter, the user can move around the calibrated Hiveboard/BeeBoards assembly and see a marker representing the emmiter move around.
 
@@ -111,7 +111,7 @@ neighbors can be hidden by unchecking the 'visible' check box in the table under
 ![](img/visualisation_tool.png)
 
 #### Note
-Communication with the HiveBoard is done using the pheromones submodule. If communication problem occur, ensure that the version used by the script is the same as on the HiveBoard.
+Communication with the HiveBoard is done using the [Pheromones submodule](https://github.com/SwarmUS/Pheromones). If communication problems occur, ensure that the version used by the script is the same as on the HiveBoard.
 ## Validate
 This is a method to test the whole angles system of the interlocalisation. Using the exact same hardware setup as the calibration it is possible to extract the angle value result from the whole acquisition, linearisation and certitude algorithm. Using the test-bench assembly will automate this procedure.
 #### Runnning the script
@@ -135,7 +135,7 @@ testbench = TurningStation('/dev/ttyACM1', 115200)
 The data extracted will be saved upon completion of the acquisition once the destination has been reached.
 
 #### Behavioral description
-Similarly to [ExtractRawData](#extractRawData), the *TurningStation* will turn by the `stepSize` incrementation until it reaches the `destination` encoder tick. At each increment, the interlocalisation is enabled and produces `NUM_DATA_POINTS_PER_ANGLE` angles. These values are the one that would be propagated in the system in a typical use case. For a complete description of the process behind these values, please refer to [link to la doc a charles sur l'interloc].
+Similarly to [ExtractRawData](#extractRawData), the *TurningStation* will turn by the `stepSize` incrementation until it reaches the `destination` encoder tick. At each increment, the interlocalisation is enabled and produces `NUM_DATA_POINTS_PER_ANGLE` angles. These values are the one that would be propagated in the system in a typical use case. For a complete description of the process behind these values, please refer to Swarmus official [interlocalisation documentation]( https://swarmus.github.io/SwarmUS-doc/sections/reference/Interloc/how_it_works/intro/).
 
 #### Results
  The saved data is found in the `/src/data` folder. Each CSV is timestamped and named using the "validation_" prefix. For a visual analysis of the data, 3 plots have already been created. Running `src/analysis/analyze_interloc_validation` will produce:
@@ -147,4 +147,4 @@ Similarly to [ExtractRawData](#extractRawData), the *TurningStation* will turn b
 analyze_validation("../data/validation_hb6.csv")
 ```
 #### Note
-Communication with the HiveBoard is done using the pheromones submodule. If communication problem occur, ensure that the version used by the script is the same as on the HiveBoard.
+Communication with the HiveBoard is done using the [Pheromones submodule](https://github.com/SwarmUS/Pheromones). If communication problems occur, ensure that the version used by the script is the same as on the HiveBoard.
