@@ -37,7 +37,8 @@ sleep(2) # arduino needs to reboot after uart initialisation
 testbench.resetPosition()
 
 stepSize = 20
-for ticks in tqdm(range(0, 2060, stepSize)):
+destination = 2060
+for ticks in tqdm(range(0, destination, stepSize)):
     hb.enable_interloc_dumps(True)
     hb.set_interloc_state(OPERATING)
 
