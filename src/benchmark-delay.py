@@ -32,7 +32,7 @@ class Runner:
         
     def function_request_handler(self, function_call_request):
         if function_call_request.function_name == "timeStart":
-            self.hb.send_function_call(hb.uuid, "timeLoopBuzz", [2], True)
+            self.hb.send_function_call(hb.uuid, "timeLoopBuzz", [self.hb.uuid], True)
             print("start time")
             self.time_start = time.time_ns()
         elif function_call_request.function_name == "timeEnd":
