@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import pyqtSlot
-from pyqtgraph import PlotWidget, plot, GridItem, LegendItem
+from pyqtgraph import GridItem
 import pyqtgraph as pg
 
 COLOR_OFFSET = 15

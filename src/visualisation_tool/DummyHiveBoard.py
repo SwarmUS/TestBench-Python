@@ -7,11 +7,11 @@ import numpy as np
 
 sys.path.insert(0, "../hiveboard")
 
-from proto.message_pb2 import Greeting, Message, InterlocState, UNSUPORTED, STANDBY, ANGLE_CALIB_RECEIVER
+from src.hiveboard.proto.message_pb2 import Greeting, Message
 from src.hiveboard.proto.message_pb2 import GetNeighborsListResponse, HiveMindHostApiResponse, Response, \
     GetNeighborResponse, NeighborPosition
-from src.hiveboard.proto.message_pb2 import GetNeighborsListRequest, GetNeighborRequest, HiveMindHostApiRequest, Request
-from proto.proto_stream import ProtoStream
+from src.hiveboard.proto.message_pb2 import  Request
+from src.hiveboard.proto.proto_stream import ProtoStream
 
 
 class DummyHiveBoard(ProtoStream):
