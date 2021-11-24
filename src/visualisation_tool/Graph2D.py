@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import pyqtSlot
-from pyqtgraph import PlotWidget, plot, GridItem, LegendItem
+from pyqtgraph import GridItem
 import pyqtgraph as pg
 
 COLOR_OFFSET = 15
@@ -24,14 +24,15 @@ class Graph2D(QtWidgets.QWidget):
         #self.graphWidget.setBackground("w")
         self.graphWidget.hideAxis('bottom')
         self.graphWidget.hideAxis('left')
-        self.graphWidget.setXRange(-7, 7)
-        self.graphWidget.setYRange(-7, 7)
+        self.graphWidget.setXRange(-5, 5)
+        self.graphWidget.setYRange(-5, 5)
         self.graphWidget.setMouseEnabled(x=False, y=False)
-        self.graphWidget.addLegend()
+        self.graphWidget.addLegend(labelTextSize='24pt')
         self.layout.addWidget(self.graphWidget)
 
     def create_grid(self):
         self.grid = GridItem(pen='white', textPen='white')
+        self.grid.setTickSpacing([1.0], [1.0])
         self.graphWidget.addItem(self.grid)
 
     def create_scatter_element(self):
@@ -40,7 +41,7 @@ class Graph2D(QtWidgets.QWidget):
                        'pen': {'color': 'w', 'width': 1},
                        'brush': pg.intColor(10, 100),  # Orange
                        'symbol': 'd',
-                       'size': 30}
+                       'size': 50}
         self.base.addPoints([base_symbol])
         self.graphWidget.addItem(self.base)
 
@@ -57,7 +58,7 @@ class Graph2D(QtWidgets.QWidget):
                                                   # 100 is the number int values for the color spectrum,
                                                   # COLOR_OFFSET is the offset to apply to have 6 different values for points
                                                   'brush': pg.intColor(neighbor_id * COLOR_OFFSET, 100),
-                                                  'size': 20}
+                                                  'size': 50}
             self.scatters[neighbor_id]["scatter"].setData(spots=[self.scatters[neighbor_id]["spot"]],
                                                           name=f"Agent {neighbor_id}")
 

@@ -1,9 +1,6 @@
 from PyQt5.QtWidgets import QTableWidget, QTableWidgetItem, QSizePolicy
-from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import pyqtSlot, pyqtSignal, Qt, QThread, QObject
 from threading import Lock
-import PyQt5
-import sys
 
 
 class NeighborCoordinateTableWorker(QObject):

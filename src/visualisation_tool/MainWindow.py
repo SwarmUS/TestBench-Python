@@ -2,13 +2,13 @@ import threading
 import time
 
 from PyQt5.QtWidgets import *
-from Graph2D import Graph2D
+from src.visualisation_tool.Graph2D import Graph2D
 from PyQt5.QtCore import QThread, pyqtSlot, Qt, pyqtSignal
 from pyqtgraph import PlotWidget, plot
 import pyqtgraph as pg
 import numpy as np
-from NeighborCoordinateTable import NeighborCoordinateTable
-from DataUpdater import DataUpdater
+from src.visualisation_tool.NeighborCoordinateTable import NeighborCoordinateTable
+from src.visualisation_tool.DataUpdater import DataUpdater
 
 
 class MainWindow(QMainWindow):

@@ -1,17 +1,15 @@
 import threading
 import time
 
-from Graph2D import Graph2D
-from NeighborCoordinateTable import NeighborCoordinateTable
-from PyQt5.QtCore import QObject, QThread, pyqtSignal, pyqtSlot
+from src.visualisation_tool.Graph2D import Graph2D
+from src.visualisation_tool.NeighborCoordinateTable import NeighborCoordinateTable
+from PyQt5.QtCore import QObject, pyqtSignal
 import numpy as np
 import sys
 
-sys.path.insert(0, "../hiveboard")
-from HiveBoard import HiveBoard
-from usb_stream import UsbStream
-from proto import message_pb2
-from proto.ethernet_stream import EthernetStream
+from src.hiveboard.HiveBoard import HiveBoard
+from src.hiveboard.usb_stream import UsbStream
+from src.hiveboard.proto.ethernet_stream import EthernetStream
 
 use_serial = True
 COM_PORT = "/dev/ttyACM0"
