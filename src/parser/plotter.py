@@ -175,7 +175,8 @@ def extractSlopeExtremums(dPDOA, mdPDOA, namePDOA = "PDOA0"):
     plt.xlabel("Real angle (deg)")
     plt.title(f"Select points to represent {namePDOA} desired offset")
     t = "Many points can be selected, the mean of the *y axis* will be used as the offset.\n" \
-        "If the sin is not wrapping, no points need to be selected, as no offset needs to be applied "
+        "If the sin is not wrapping, no points need to be selected, as no offset needs to be applied.\n" \
+        "Selection will be saved on exit"
     figtext(.02, .02, t)
 
     plt.show()
