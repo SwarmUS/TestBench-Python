@@ -162,10 +162,3 @@ analyze_validation("../data/validation_hb6.csv")
 ```
 #### Note
 Communication with the HiveBoard is done using the [Pheromones submodule](https://github.com/SwarmUS/Pheromones). If communication problems occur, ensure that the version used by the script is the same as on the HiveBoard.
-
-
-
-
-# TODO
-image pour le mount dans quelle orientation
-
