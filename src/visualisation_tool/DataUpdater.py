@@ -11,7 +11,7 @@ from src.hiveboard.HiveBoard import HiveBoard
 from src.hiveboard.usb_stream import UsbStream
 from src.hiveboard.proto.ethernet_stream import EthernetStream
 
-use_serial = True
+use_serial = False
 COM_PORT = "/dev/ttyACM0"
 
 
