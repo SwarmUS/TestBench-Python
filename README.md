@@ -6,7 +6,7 @@ The python scripts are :
 - [Send_angle_params](#send_angle_params)
 - [Visualization](#visualization)
 - [Validate](#validate)
-
+	
 ## Installation
 Prerequisites:
 
@@ -21,12 +21,24 @@ Follow this flow chart in order to find which script to run depending on your ne
 This script enables the user to extract the raw DW1000 data from the HiveBoard/BeeBoards assembly. The test-bench will turn by a chosen stepping angle and acquire the desired amount of raw data per step.
 #### Hardware setup
 - Place a BeeBoards assembly in the middle of the test-bench. The 0deg axis of the assembly needs to point in a parallel fashion to the mounted laser pointer. 
+	- The **assembly** is described as :
+		- The BeeBoard mount
+		- The 3 wings boards
+		- The 3 USC-C cables
+		- The HiveBoard
+		- The channel used for each BeeBoard.
 - The BeeBoards have to be connected to a HiveBoard mounted to the test-bench using the same cable and ports as labeled on the assembly. If the cables and assembly are not indicated be sure to note which BeeBoards are used, plugged with which cables and in which channel on which HiveBoard. **The calibration will only be valid for this configuration and has to be completly re-performed if any of this component is changed or plugged differently.**
+- The BeeBoard assembly should be mounted as follow:<br />
+**If, for any reason, the antenna are not plugged in the same channel as asked per the hardware setup, absolutely refer to the [angle documentation](https://swarmus.github.io/SwarmUS-doc/sections/reference/Interloc/how_it_works/angle/) as everything is dependent on this.**
+<img src="img/Beeboard_asbly.png" width="400"><br />
 - Connect power and communication interface to the HiveBoard.
+- Ensure the HiveBoard has the latest version of the [HiveMind](https://github.com/SwarmUS/HiveMind)
 - Connect a usb cable to the Arduino.
 - Connect power to the drive submodule (red = 12&nbsp;V, white = ground)
 - To align the receiver with the emmiter, use the laser pointer. Each laser should point to the alignment target of the other laser assembly. This position ensures a 0 degree relative orientation between the two radio setup. 
-- The laser mount should be calibrated periodicly to ensure its position and accuracy,
+- The laser mount should be calibrated periodicly to ensure its position and accuracy.
+- Press button 0 on the emmiter to enable the continuous sending mode.
+- Ensure that nothing is between the emmiter and the BeeBoard assembly (ensure line of sight).
 #### Runnning the script
 The script can be run from `/src/extractRawData`.<br />
 Requires the [TestBench-Arduino](https://swarmus.github.io/SwarmUS-doc/) code to be installed on the test-bench's Arduino in order to be interfaced.
@@ -56,16 +68,18 @@ Parses and presents the PDOA values from the previously acquired raw data (from 
 The script can be run from `src/parser`.
 #### Adjustable parameters
 `dataFolderPath` : folder path where the extracted raw data CSV produced by [ExtractRawData](#pxtractRawData) has been saved.<br />
-`dataName` : name of the file to parse the data from.<br />
-`usedPairs` : the antenna pairs to be used. Encoded as follow :<br />
+`dataName` : name of the file to parse the data from, without the extension.<br />
+`usedPairs` : the antenna pairs to be used. Use 0,1 and 5 for default operation. Encoded as follow :<br />
 <pre><code>	pair 0 = antenna 0 - antenna 1<br />
 	pair 1 = antenna 0 - antenna 2<br />
 	pair 2 = antenna 1 - antenna 0<br />
-	....<br />
+	pair 3 = antenna 1 - antenna 2<br />
+	pair 4 = antenna 2 - antenna 0<br />
 	pair 5 = antenna 2 - antenna 1<br /></code></pre>
+	Refer to the [angle documentation](https://swarmus.github.io/SwarmUS-doc/sections/reference/Interloc/how_it_works/angle/) for a better understanding of the antenna pairs and their selection. <br />
 `EXPORT_PDOA` : `True` will prompt the second set of plots (slopes extraction) and save the calibration result in a **pickle** format.
 #### Behavioral descriptionand user interaction
-Upon runnning the script, the first plot to appear will ask the user to select points from which to offset the whole dataset. Theoretically, the plot should represent a **sin** wave, the offset in this section will prevent the signal from wrapping over 2&pi;and under 0. If the **sin** is not wrapping, no points need to be selected, as no offset needs to be applied, simply close the plot.The points selected should then be the very bottom of a **sin** *parabola* section. Also, to obtain a better estimation of the offset needed, it is possible to select the very bottom of the *parabola*, and a top of this *parabola* that has wrapped over. Many points can be selected, the mean of the *y axis* will be used as the offset. This process has to be repeted for the number of `usedPairs` selected. Here is an exemple of the process.<br />
+Upon runnning the script, the first plot to appear will ask the user to select points from which to offset the whole dataset. Theoretically, the plot should represent a **sin** wave. The goal is to offset the signal until it wraps minimally. If the **sin** is not wrapping, no points need to be selected, as no offset needs to be applied, simply close the plot. Otherwise, the points selected should then be the very bottom of a **sin** *parabola* section.  Also, to obtain a better estimation of the offset needed, it is possible to select the very bottom of the *parabola*, and a top of this *parabola* that has wrapped over. Many points can be selected, the mean of the *y axis* will be used as the offset. This process has to be repeted for the number of `usedPairs` selected. Here is an exemple of the process.<br />
 ![](img/ex_offset.png)<br />
 A plot of the result will then appear. If all curves are not wrapping, the first step is succesful. Otherwise, the script must be re-run and better points must be selected until all curves do not wrap. <br />
 
