@@ -29,7 +29,7 @@ This script enables the user to extract the raw DW1000 data from the HiveBoard/B
 		- The channel used for each BeeBoard.
 - The BeeBoards have to be connected to a HiveBoard mounted to the test-bench using the same cable and ports as labeled on the assembly. If the cables and assembly are not indicated be sure to note which BeeBoards are used, plugged with which cables and in which channel on which HiveBoard. **The calibration will only be valid for this configuration and has to be completly re-performed if any of this component is changed or plugged differently.**
 - The BeeBoard assembly should be mounted as follow:
-![](img/Beeboard_asbly.png)<br />
+<img src="img/Beeboard_asbly.png" width="400"><br />
 **If, for any reason, the antenna are not plugged in the same channel as asked per the hardware setup, absolutely refer to the [angle documentation](https://swarmus.github.io/SwarmUS-doc/sections/reference/Interloc/how_it_works/angle/) as everything is dependent on this.**
 - Connect power and communication interface to the HiveBoard.
 - Ensure the HiveBoard has the latest version of the [HiveMind](https://github.com/SwarmUS/HiveMind)
