@@ -5,8 +5,8 @@ from src.hiveboard.HiveBoard import HiveBoard
 from src.hiveboard.proto.ethernet_stream import EthernetStream
 from src.hiveboard.usb_stream import UsbStream
 
-HIVEBOARD_ID = 2
-MOUNT_ORIENTATION_OFFSET = 0 # Orientation offset (in degrees) of the BeeBoard assembly on the robot
+HIVEBOARD_ID = 6
+MOUNT_ORIENTATION_OFFSET = -60 # Orientation offset (in degrees) of the BeeBoard assembly on the robot
 
 # To use ethernet, you must have a static IP of 192.168.1.101 on submask 255.255.255.0
 USE_ETHERNET = False

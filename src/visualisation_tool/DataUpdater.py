@@ -80,7 +80,7 @@ class DataUpdater(QObject):
     def handle_neigbor_update(self, neighbor):
         neighbor_id = neighbor.neighbor_id
         self.new_polar_point.emit(neighbor_id, neighbor.position.distance, neighbor.position.azimuth)
-        y = neighbor.position.distance * np.cos(neighbor.position.azimuth / 180 * np.pi)
+        y = -neighbor.position.distance * np.cos(neighbor.position.azimuth / 180 * np.pi)
         x = neighbor.position.distance * np.sin(neighbor.position.azimuth / 180 * np.pi)
         self.new_cartesian_point.emit(neighbor_id, x, y)
 
