@@ -29,9 +29,8 @@ This script enables the user to extract the raw DW1000 data from the HiveBoard/B
 		- The channel used for each BeeBoard.
 - The BeeBoards have to be connected to a HiveBoard mounted to the test-bench using the same cable and ports as labeled on the assembly. If the cables and assembly are not indicated be sure to note which BeeBoards are used, plugged with which cables and in which channel on which HiveBoard. **The calibration will only be valid for this configuration and has to be completly re-performed if any of this component is changed or plugged differently.**
 - The BeeBoard assembly should be mounted as follow:
-<pre><code>	
-![](img/Beeboard_asbly.png)
-</code></pre>
+![](img/Beeboard_asbly.png)<br />
+**If, for any reason, the antenna are not plugged in the same channel as asked per the hardware setup, absolutely refer to the [angle documentation](https://swarmus.github.io/SwarmUS-doc/sections/reference/Interloc/how_it_works/angle/) as everything is dependent on this.**
 - Connect power and communication interface to the HiveBoard.
 - Ensure the HiveBoard has the latest version of the [HiveMind](https://github.com/SwarmUS/HiveMind)
 - Connect a usb cable to the Arduino.
@@ -77,7 +76,7 @@ The script can be run from `src/parser`.
 	pair 3 = antenna 1 - antenna 2<br />
 	pair 4 = antenna 2 - antenna 0<br />
 	pair 5 = antenna 2 - antenna 1<br /></code></pre>
-	Refer to the [angle documentation](https://swarmus.github.io/SwarmUS-doc/sections/reference/Interloc/how_it_works/angle/) for a better understanding of the antenna pairs and their selection. **If, for any reason, the antenna are not plugged in the same channel as asked per the hardware setup, absolutely refer to the [angle documentation](https://swarmus.github.io/SwarmUS-doc/sections/reference/Interloc/how_it_works/angle/) as everything is dependent on this**
+	Refer to the [angle documentation](https://swarmus.github.io/SwarmUS-doc/sections/reference/Interloc/how_it_works/angle/) for a better understanding of the antenna pairs and their selection. <br />
 `EXPORT_PDOA` : `True` will prompt the second set of plots (slopes extraction) and save the calibration result in a **pickle** format.
 #### Behavioral descriptionand user interaction
 Upon runnning the script, the first plot to appear will ask the user to select points from which to offset the whole dataset. Theoretically, the plot should represent a **sin** wave, the offset in this section will prevent the signal from wrapping over 2&pi;and under 0. If the **sin** is not wrapping, no points need to be selected, as no offset needs to be applied, simply close the plot.The points selected should then be the very bottom of a **sin** *parabola* section. Also, to obtain a better estimation of the offset needed, it is possible to select the very bottom of the *parabola*, and a top of this *parabola* that has wrapped over. Many points can be selected, the mean of the *y axis* will be used as the offset. This process has to be repeted for the number of `usedPairs` selected. Here is an exemple of the process.<br />
